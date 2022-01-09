@@ -2,7 +2,7 @@ def get_readable_time(seconds: int) -> str:
     count = 0
     ping_time = ""
     time_list = []
-    time_suffix_list = ["s", "m", "h", "days"]
+    time_suffix_list = [" giây", " phút", " giờ", " ngày"]
     while count < 4:
         count += 1
         if count < 3:
@@ -18,5 +18,5 @@ def get_readable_time(seconds: int) -> str:
     if len(time_list) == 4:
         ping_time += time_list.pop() + ", "
     time_list.reverse()
-    ping_time += ":".join(time_list)
+    ping_time += " ".join(time_list)
     return ping_time
