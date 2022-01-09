@@ -37,29 +37,29 @@ __HELP__ = """
 
 
 /pause
-- Pause the playing music on voice chat.
+- Tạm dừng phát nhạc khi trò chuyện thoại.
 
 /resume
-- Resume the paused music on voice chat.
+- Tiếp tục nhạc đã tạm dừng trên trò chuyện thoại.
 
 /skip
-- Skip the current playing music on voice chat
+- Bỏ qua phần nhạc đang phát hiện tại trên trò chuyện thoại
 
 /end or /stop
-- Stop the playout.
+- Dừng cuộc chơi.
 
 /queue
-- Check queue list.
+- Kiểm tra danh sách hàng đợi.
 
 
 **Note:**
-Only for Sudo Users
+Chỉ dành cho người dùng Sudo
 
 /activevc
-- Check active voice chats on bot.
+- Kiểm tra các cuộc trò chuyện thoại đang hoạt động trên bot.
 
 /activevideo
-- Check active video calls on bot.
+- Kiểm tra các cuộc gọi video đang hoạt động trên bot.
 """
 
 
@@ -78,19 +78,19 @@ async def admins(_, message: Message):
     chat_id = message.chat.id
     if message.command[0][1] == "a":
         if not await is_music_playing(message.chat.id):
-            return await message.reply_text("Music is already Paused.")
+            return await message.reply_text("Nhạc đã bị Tạm dừng.")
         await music_off(chat_id)
         await pause_stream(chat_id)
         await message.reply_text(
-            f"🎧 Voicechat Paused by {message.from_user.mention}!"
+            f"🎧 Trò chuyện thoại bị Tạm dừng bởi {message.from_user.mention}!"
         )
     if message.command[0][1] == "e":
         if await is_music_playing(message.chat.id):
-            return await message.reply_text("Music is already Playing.")
+            return await message.reply_text("Nhạc đã được phát.")
         await music_on(chat_id)
         await resume_stream(chat_id)
         await message.reply_text(
-            f"🎧 Voicechat Resumed by {message.from_user.mention}!"
+            f"🎧 Trò chuyện thoại được tiếp tục bởi {message.from_user.mention}!"
         )
     if message.command[0][1] == "t" or message.command[0][1] == "n":
         if message.chat.id not in db_mem:
@@ -105,7 +105,7 @@ async def admins(_, message: Message):
         await remove_active_video_chat(chat_id)
         await stop_stream(chat_id)
         await message.reply_text(
-            f"🎧 Voicechat End/Stopped by {message.from_user.mention}!"
+            f"🎧 Voicechat Kết thúc / Đã dừng bởi {message.from_user.mention}!"
         )
     if message.command[0][1] == "k":
         if message.chat.id not in db_mem:
@@ -117,7 +117,7 @@ async def admins(_, message: Message):
             await remove_active_chat(chat_id)
             await remove_active_video_chat(chat_id)
             await message.reply_text(
-                "No more music in __Queue__ \n\nLeaving Voice Chat"
+                "Không còn nhạc trong __Xếp hàng__ \n\nRời khỏi cuộc trò chuyện thoại"
             )
             await stop_stream(chat_id)
             return
@@ -162,7 +162,7 @@ async def admins(_, message: Message):
                 final_output = await message.reply_photo(
                     photo=thumb,
                     reply_markup=InlineKeyboardMarkup(buttons),
-                    caption=f"<b>__Skipped Voice Chat__</b>\n\n🎥<b>__Started Playing:__</b> {title} \n⏳<b>__Duration:__</b> {duration_min} \n👤<b>__Requested by:__ </b> {mention}",
+                    caption=f"<b>__Đã bỏ qua cuộc trò chuyện thoại__</b>\n\n🎥<b>__Bắt đầu chơi:__</b> {title} \n⏳<b>__Duration:__</b> {duration_min} \n👤<b>__Requested by:__ </b> {mention}",
                 )
                 await start_timer(
                     videoid,
@@ -175,7 +175,7 @@ async def admins(_, message: Message):
                 )
             elif str(finxx) == "s1s":
                 mystic = await message.reply_text(
-                    "Skipped.. Changing to next Video Stream."
+                    "Đã bỏ qua .. Thay đổi sang Luồng video tiếp theo."
                 )
                 afk = videoid
                 read = (str(videoid)).replace("s1s_", "", 1)
@@ -196,7 +196,7 @@ async def admins(_, message: Message):
                         photo="Utils/Telegram.JPEG",
                         reply_markup=InlineKeyboardMarkup(buttons),
                         caption=(
-                            f"<b>__Skipped Video Chat__</b>\n\n👤**__Requested by:__** {mention}"
+                            f"<b>__Trò chuyện video đã bỏ qua__</b>\n\n👤**__Được yêu cầu bởi:__** {mention}"
                         ),
                     )
                     await mystic.delete()
@@ -210,7 +210,7 @@ async def admins(_, message: Message):
                     nrs, ytlink = await get_m3u8(videoid)
                     if nrs == 0:
                         return await mystic.edit(
-                            "Failed to fetch Video Formats.",
+                            "Không tìm nạp được các Định dạng Video.",
                         )
                     try:
                         await skip_video_stream(
@@ -218,7 +218,7 @@ async def admins(_, message: Message):
                         )
                     except Exception as e:
                         return await mystic.edit(
-                            f"Error while changing video stream.\n\nPossible Reason:- {e}"
+                            f"Lỗi khi thay đổi luồng video.\n\nLý do có thể:- {e}"
                         )
                     theme = await check_theme(chat_id)
                     c_title = message.chat.title
@@ -236,7 +236,7 @@ async def admins(_, message: Message):
                         photo=thumb,
                         reply_markup=InlineKeyboardMarkup(buttons),
                         caption=(
-                            f"<b>__Skipped Video Chat__</b>\n\n🎥<b>__Started Video Playing:__ </b> [{title[:25]}](https://www.youtube.com/watch?v={videoid}) \n👤**__Requested by:__** {mention}"
+                            f"<b>__Trò chuyện video đã bỏ qua__</b>\n\n🎥<b>__Bắt đầu phát video:__ </b> [{title[:25]}](https://www.youtube.com/watch?v={videoid}) \n👤**__Được yêu cầu bởi:__** {mention}"
                         ),
                     )
                     await mystic.delete()
@@ -252,7 +252,7 @@ async def admins(_, message: Message):
                     )
             else:
                 mystic = await message.reply_text(
-                    f"**{MUSIC_BOT_NAME} Playlist Function**\n\n__Downloading Next Music From Playlist....__"
+                    f"**{MUSIC_BOT_NAME} chức năng danh sách phát**\n\n__Tải xuống nhạc tiếp theo từ danh sách phát....__"
                 )
                 (
                     title,
@@ -261,7 +261,7 @@ async def admins(_, message: Message):
                     thumbnail,
                 ) = get_yt_info_id(videoid)
                 await mystic.edit(
-                    f"**{MUSIC_BOT_NAME} Downloader**\n\n**Title:** {title[:50]}\n\n0% ▓▓▓▓▓▓▓▓▓▓▓▓ 100%"
+                    f"**{MUSIC_BOT_NAME} đang tải xuống**\n\n**Title:** {title[:50]}\n\n0% ▓▓▓▓▓▓▓▓▓▓▓▓ 100%"
                 )
                 downloaded_file = await loop.run_in_executor(
                     None, download, videoid, mystic, title
@@ -282,7 +282,7 @@ async def admins(_, message: Message):
                     photo=thumb,
                     reply_markup=InlineKeyboardMarkup(buttons),
                     caption=(
-                        f"<b>__Skipped Voice Chat__</b>\n\n🎥<b>__Started Playing:__ </b>[{title[:25]}](https://www.youtube.com/watch?v={videoid}) \n⏳<b>__Duration:__</b> {duration_min} Mins\n👤**__Requested by:__** {mention}"
+                        f"<b>__Đã bỏ qua cuộc trò chuyện thoại__</b>\n\n🎥<b>__Bắt đầu chơi:__ </b>[{title[:25]}](https://www.youtube.com/watch?v={videoid}) \n⏳<b>__Thời lượng:__</b> {duration_min} phút\n👤**__Được yêu cầu bởi:__** {mention}"
                     ),
                 )
                 os.remove(thumb)
