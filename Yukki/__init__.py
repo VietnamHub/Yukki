@@ -60,9 +60,9 @@ DURATION_LIMIT = int(time_to_seconds(f"{DURATION_LIMIT_MIN}:00"))
 ASSISTANT_PREFIX = ASSISTANT_PREFIX
 
 ### Bot Info
-BOT_ID = 2037162741
-BOT_NAME = "Play Youtube 🎧"
-BOT_USERNAME = "PlayYoutube_bot"
+BOT_ID = 
+BOT_NAME = ""
+BOT_USERNAME = ""
 
 ### Assistant Info
 ASSIDS = []
