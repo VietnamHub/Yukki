@@ -60,7 +60,7 @@ DURATION_LIMIT = int(time_to_seconds(f"{DURATION_LIMIT_MIN}:00"))
 ASSISTANT_PREFIX = ASSISTANT_PREFIX
 
 ### Bot Info
-BOT_ID = 
+BOT_ID = 0
 BOT_NAME = ""
 BOT_USERNAME = ""
 
