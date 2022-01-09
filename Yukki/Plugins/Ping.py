@@ -38,7 +38,7 @@ async def ping(_, message):
     )
     uptime = await bot_sys_stats()
     end = datetime.now()
-    resp = (end - start).microseconds / 100
+    resp = (end - start).microseconds / 10
     await response.edit_text(
         f"**Pong!**\n`⚡{resp} ms`\n\n<b><u>{MUSIC_BOT_NAME} System Stats:</u></b>{uptime}"
     )
