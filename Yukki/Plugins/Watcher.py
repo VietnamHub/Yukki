@@ -34,9 +34,10 @@ async def chat_watcher_func(_, message):
     checking = f"[{message.from_user.first_name}](tg://user?id={message.from_user.id})"
     if await is_gbanned_user(userid):
         try:
+            await message.delete()
             await message.chat.kick_member(userid)
         except Exception:
             return
         await message.reply_text(
-            f"{checking} bị Người dùng Sudo cấm trên toàn cầu và đã bị loại khỏi cuộc trò chuyện.\n\n**Lý do có thể:** Người gửi thư rác và kẻ lạm dụng tiềm năng."
+            f"{checking} bị quản trị viên cấm toàn bộ nhóm và đã bị loại ra khỏi nhóm này."
         )
