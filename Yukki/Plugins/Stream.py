@@ -36,12 +36,12 @@ __MODULE__ = "VideoCalls"
 __HELP__ = f"""
 
 /play [Reply to any Video] or [YT Link] or [Music Name]
-- Stream Video on Voice Chat
+- Phát trực tuyến video trên trò chuyện thoại
 
-**For Sudo User:-**
+**Đối với người dùng Sudo:-**
 
 /set_video_limit [Number of Chats]
-- Set a maximum Number of Chats allowed for Video Calls at a time.
+- Đặt số lượng cuộc trò chuyện tối đa được phép cho cuộc gọi điện video tại một thời điểm.
 
 
 """
@@ -55,7 +55,7 @@ async def choose_playmode(_, CallbackQuery):
     videoid, duration, user_id = callback_request.split("|")
     if CallbackQuery.from_user.id != int(user_id):
         return await CallbackQuery.answer(
-            "This is not for you! Search You Own Song.", show_alert=True
+            "Cái này không dành cho bạn! Tìm kiếm bài hát của riêng bạn.", show_alert=True
         )
     buttons = choose_markup(videoid, duration, user_id)
     await CallbackQuery.edit_message_reply_markup(
@@ -69,7 +69,7 @@ async def quality_markup(_, CallbackQuery):
     if not limit:
         await CallbackQuery.message.delete()
         return await CallbackQuery.message.reply_text(
-            "**No Limit Defined for Video Calls**\n\nSet a Limit for Number of Maximum Video Calls allowed on Bot by /set_video_limit [Sudo Users Only]"
+            "**Không có giới hạn được xác định cho cuộc gọi điện video**\n\nĐặt giới hạn cho số cuộc gọi video tối đa được phép trên Bot bằng cách /set_video_limit [Sudo Users Only]"
         )
     count = len(await get_active_video_chats())
     if int(count) == int(limit):
@@ -77,7 +77,7 @@ async def quality_markup(_, CallbackQuery):
             pass
         else:
             return await CallbackQuery.answer(
-                "Sorry! Bot only allows limited number of video calls due to CPU overload issues. Other chats are using video call right now. Try switching to audio or try again later",
+                "Xin lỗi! Bot chỉ cho phép giới hạn số lượng cuộc gọi video do sự cố quá tải của CPU. Các cuộc trò chuyện khác hiện đang sử dụng cuộc gọi video. Hãy thử chuyển sang âm thanh hoặc thử lại sau",
                 show_alert=True,
             )
     if CallbackQuery.message.chat.id not in db_mem:
@@ -86,7 +86,7 @@ async def quality_markup(_, CallbackQuery):
         read1 = db_mem[CallbackQuery.message.chat.id]["live_check"]
         if read1:
             return await CallbackQuery.answer(
-                "Live Streaming Playing...Stop it to play music",
+                "Đang phát trực tiếp ... Dừng lại để phát nhạc",
                 show_alert=True,
             )
         else:
@@ -99,7 +99,7 @@ async def quality_markup(_, CallbackQuery):
     videoid, duration, user_id = callback_request.split("|")
     if CallbackQuery.from_user.id != int(user_id):
         return await CallbackQuery.answer(
-            "This is not for you! Search You Own Song.", show_alert=True
+            "Cái này không dành cho bạn! Tìm kiếm bài hát của riêng bạn.", show_alert=True
         )
     buttons = stream_quality_markup(videoid, duration, user_id)
     await CallbackQuery.edit_message_reply_markup(
@@ -113,7 +113,7 @@ async def Live_Videos_Stream(_, CallbackQuery):
     if not limit:
         await CallbackQuery.message.delete()
         return await CallbackQuery.message.reply_text(
-            "**No Limit Defined for Video Calls**\n\nSet a Limit for Number of Maximum Video Calls allowed on Bot by /set_video_limit [Sudo Users Only]"
+            "**Không có giới hạn được xác định cho cuộc gọi điện video**\n\nĐặt giới hạn cho số cuộc gọi video tối đa được phép trên Bot bằng cách /set_video_limit [Sudo Users Only]"
         )
     count = len(await get_active_video_chats())
     if int(count) == int(limit):
@@ -121,7 +121,7 @@ async def Live_Videos_Stream(_, CallbackQuery):
             pass
         else:
             return await CallbackQuery.answer(
-                "Sorry! Bot only allows limited number of video calls due to CPU overload issues. Other chats are using video call right now. Try switching to audio or try again later",
+                "Xin lỗi! Bot chỉ cho phép giới hạn số lượng cuộc gọi video do sự cố quá tải của CPU. Các cuộc trò chuyện khác hiện đang sử dụng cuộc gọi video. Hãy thử chuyển sang âm thanh hoặc thử lại sau",
                 show_alert=True,
             )
     if CallbackQuery.message.chat.id not in db_mem:
@@ -133,7 +133,7 @@ async def Live_Videos_Stream(_, CallbackQuery):
     quality, videoid, duration, user_id = callback_request.split("|")
     if CallbackQuery.from_user.id != int(user_id):
         return await CallbackQuery.answer(
-            "This is not for you! Search You Own Song.", show_alert=True
+            "Cái này không dành cho bạn! Tìm kiếm bài hát của riêng bạn.", show_alert=True
         )
     await CallbackQuery.message.delete()
     title, duration_min, duration_sec, thumbnail = get_yt_info_id(videoid)
@@ -144,7 +144,7 @@ async def Live_Videos_Stream(_, CallbackQuery):
     nrs, ytlink = await get_m3u8(videoid)
     if nrs == 0:
         return await CallbackQuery.message.reply_text(
-            "Video Formats not Found.."
+            "Không tìm thấy Định dạng Video.."
         )
     await start_live_stream(
         CallbackQuery,
@@ -169,19 +169,19 @@ async def Videos_Stream(_, CallbackQuery):
     quality, videoid, duration, user_id = callback_request.split("|")
     if CallbackQuery.from_user.id != int(user_id):
         return await CallbackQuery.answer(
-            "This is not for you! Search You Own Song.", show_alert=True
+            "Cái này không dành cho bạn! Tìm kiếm bài hát của riêng bạn.", show_alert=True
         )
     if str(duration) == "None":
         buttons = livestream_markup(quality, videoid, duration, user_id)
         return await CallbackQuery.edit_message_text(
-            "**Live Stream Detected**\n\nWant to play live stream? This will stop the current playing musics(if any) and will start streaming live video.",
+            "**Đã phát hiện luồng trực tiếp**\n\nBạn muốn phát trực tiếp? Thao tác này sẽ dừng các bản nhạc đang phát hiện tại (nếu có) và sẽ bắt đầu phát video trực tiếp.",
             reply_markup=InlineKeyboardMarkup(buttons),
         )
     await CallbackQuery.message.delete()
     title, duration_min, duration_sec, thumbnail = get_yt_info_id(videoid)
     if duration_sec > DURATION_LIMIT:
         return await CallbackQuery.message.reply_text(
-            f"**Duration Limit Exceeded**\n\n**Allowed Duration: **{DURATION_LIMIT_MIN} minute(s)\n**Received Duration:** {duration_min} minute(s)"
+            f"**Đã vượt quá giới hạn thời lượng**\n\n**Thời lượng được phép: **{DURATION_LIMIT_MIN} minute(s)\n**Thời lượng đã nhận:** {duration_min} minute(s)"
         )
     await CallbackQuery.answer(f"Processing:- {title[:20]}", show_alert=True)
     theme = await check_theme(chat_id)
@@ -190,7 +190,7 @@ async def Videos_Stream(_, CallbackQuery):
     nrs, ytlink = await get_m3u8(videoid)
     if nrs == 0:
         return await CallbackQuery.message.reply_text(
-            "Video Formats not Found.."
+            "Không tìm thấy Định dạng Video.."
         )
     await start_video_stream(
         CallbackQuery,
