@@ -47,14 +47,14 @@ async def awaiting_message(client, message):
     else:
         flood[str(user_id)] = 1
     if flood[str(user_id)] > 5:
-        await message.reply_text("Spam Detected. User Blocked")
+        await message.reply_text("Đã phát hiện thư rác. Người dùng bị chặn")
         await client.send_message(
             LOG_GROUP_ID,
-            f"**Spam Detect Block On Assistant**\n\n- **Blocked User:** {message.from_user.mention}\n- **User ID:** {message.from_user.id}",
+            f"**Chặn phát hiện thư rác trên Trợ lý**\n\n- **Người dùng bị chặn:** {message.from_user.mention}\n- **User ID:** {message.from_user.id}",
         )
         return await client.block_user(user_id)
     await message.reply_text(
-        f"Hello, I am {MUSIC_BOT_NAME}'s Assistant.\n\nPlease dont spam here , else you'll get blocked.\nFor more Help start :- @{BOT_USERNAME}"
+        f"Hello!.\n\nVui lòng đừng spam tin nhắn , nếu không bạn sẽ bị chặn.\n- Link nhóm: https://t.me/+S5obLSW8ChIxNjA1"
     )
 
 
