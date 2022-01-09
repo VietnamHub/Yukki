@@ -12,7 +12,7 @@ from Yukki.Utilities.ping import get_readable_time
 __MODULE__ = "Ping"
 __HELP__ = """
 
-/ping - Check if Bot is alive or not.
+/ping - Kiểm tra xem Bot còn sống hay không.
 """
 
 
@@ -38,7 +38,7 @@ async def ping(_, message):
     )
     uptime = await bot_sys_stats()
     end = datetime.now()
-    resp = (end - start).microseconds / 1000
+    resp = (end - start).microseconds / 100
     await response.edit_text(
         f"**Pong!**\n`⚡{resp} ms`\n\n<b><u>{MUSIC_BOT_NAME} System Stats:</u></b>{uptime}"
     )
