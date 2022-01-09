@@ -79,7 +79,7 @@ async def initiate_bot():
             )
         console.print("")
         status.update(
-            status="[bold blue]Importation Completed!",
+            status="[bold blue] Đã nhập xong!",
         )
     console.print(
         "[bold green]Chúc mừng!! Slime Music Bot đã khởi động thành công!\n"
@@ -87,7 +87,7 @@ async def initiate_bot():
     try:
         await app.send_message(
             LOG_GROUP_ID,
-            "<b>Congrats!! Music Bot has started successfully!</b>",
+            "<b>Chúc mừng!! Music Bot đã bắt đầu thành công!</b>",
         )
     except Exception as e:
         print(
@@ -106,7 +106,7 @@ async def initiate_bot():
         try:
             await ASS_CLI_1.send_message(
                 LOG_GROUP_ID,
-                "<b>Congrats!! Assistant Client 1  has started successfully!</b>",
+                "<b>Chúc mừng!! Trợ lý Khách hàng 1 đã bắt đầu thành công!</b>",
             )
         except Exception as e:
             print(
@@ -119,13 +119,13 @@ async def initiate_bot():
             await ASS_CLI_1.join_chat("Vetmang")
         except:
             pass
-        console.print(f"├[red] Assistant 1 Started as {ASSNAME1}!")
+        console.print(f"├[red] Trợ lý 1 Bắt đầu với tư cách là {ASSNAME1}!")
         console.print(f"├[green] ID :- {ASSID1}!")
     if STRING2 != "None":
         try:
             await ASS_CLI_2.send_message(
                 LOG_GROUP_ID,
-                "<b>Congrats!! Assistant Client 2 has started successfully!</b>",
+                "<b>Chúc mừng!! Assistant Client 2 đã bắt đầu thành công!</b>",
             )
         except Exception as e:
             print(
@@ -144,7 +144,7 @@ async def initiate_bot():
         try:
             await ASS_CLI_3.send_message(
                 LOG_GROUP_ID,
-                "<b>Congrats!! Assistant Client 3 has started successfully!</b>",
+                "<b>Chúc mừng!! Assistant Client 3 đã bắt đầu thành công!</b>",
             )
         except Exception as e:
             print(
@@ -163,7 +163,7 @@ async def initiate_bot():
         try:
             await ASS_CLI_4.send_message(
                 LOG_GROUP_ID,
-                "<b>Congrats!! Assistant Client 4 has started successfully!</b>",
+                "<b>Chúc mừng!! Assistant Client 4 đã bắt đầu thành công!</b>",
             )
         except Exception as e:
             print(
@@ -182,7 +182,7 @@ async def initiate_bot():
         try:
             await ASS_CLI_5.send_message(
                 LOG_GROUP_ID,
-                "<b>Congrats!! Assistant Client 5 has started successfully!</b>",
+                "<b>Chúc mừng!! Assistant Client 5 đã bắt đầu thành công!</b>",
             )
         except Exception as e:
             print(
