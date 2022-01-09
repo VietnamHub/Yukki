@@ -82,7 +82,7 @@ async def initiate_bot():
             status="[bold blue]Importation Completed!",
         )
     console.print(
-        "[bold green]Congrats!! Yukki Music Bot has started successfully!\n"
+        "[bold green]Chúc mừng!! Slime Music Bot đã khởi động thành công!\n"
     )
     try:
         await app.send_message(
@@ -91,7 +91,7 @@ async def initiate_bot():
         )
     except Exception as e:
         print(
-            "\nBot has failed to access the log Channel. Make sure that you have added your bot to your log channel and promoted as admin!"
+            "\nBot đã không thể truy cập vào Kênh nhật ký. Đảm bảo rằng bạn đã thêm bot vào kênh nhật ký của mình và thăng cấp làm quản trị viên!"
         )
         console.print(f"\n[red]Stopping Bot")
         return
@@ -115,8 +115,8 @@ async def initiate_bot():
             console.print(f"\n[red]Stopping Bot")
             return
         try:
-            await ASS_CLI_1.join_chat("OfficialYukki")
-            await ASS_CLI_1.join_chat("YukkiSupport")
+            await ASS_CLI_1.join_chat("VietnamHub")
+            await ASS_CLI_1.join_chat("Vetmang")
         except:
             pass
         console.print(f"├[red] Assistant 1 Started as {ASSNAME1}!")
@@ -134,8 +134,8 @@ async def initiate_bot():
             console.print(f"\n[red]Stopping Bot")
             return
         try:
-            await ASS_CLI_2.join_chat("OfficialYukki")
-            await ASS_CLI_2.join_chat("YukkiSupport")
+            await ASS_CLI_2.join_chat("VietnamHub")
+            await ASS_CLI_2.join_chat("Vetmang")
         except:
             pass
         console.print(f"├[red] Assistant 2 Started as {ASSNAME2}!")
@@ -153,8 +153,8 @@ async def initiate_bot():
             console.print(f"\n[red]Stopping Bot")
             return
         try:
-            await ASS_CLI_3.join_chat("OfficialYukki")
-            await ASS_CLI_3.join_chat("YukkiSupport")
+            await ASS_CLI_3.join_chat("Vetmang")
+            await ASS_CLI_3.join_chat("VietnamHub")
         except:
             pass
         console.print(f"├[red] Assistant 3 Started as {ASSNAME3}!")
@@ -172,8 +172,8 @@ async def initiate_bot():
             console.print(f"\n[red]Stopping Bot")
             return
         try:
-            await ASS_CLI_4.join_chat("OfficialYukki")
-            await ASS_CLI_4.join_chat("YukkiSupport")
+            await ASS_CLI_4.join_chat("VietnamHub")
+            await ASS_CLI_4.join_chat("Vetmang")
         except:
             pass
         console.print(f"├[red] Assistant 4 Started as {ASSNAME4}!")
@@ -186,13 +186,13 @@ async def initiate_bot():
             )
         except Exception as e:
             print(
-                "\nAssistant Account 5 has failed to access the log Channel. Make sure that you have added your Assistant to your log channel and promoted as admin!"
+                "\nTài khoản Trợ lý 5 không truy cập được vào Kênh nhật ký. Đảm bảo rằng bạn đã thêm Trợ lý vào kênh nhật ký của mình và được thăng cấp làm quản trị viên!"
             )
             console.print(f"\n[red]Stopping Bot")
             return
         try:
-            await ASS_CLI_5.join_chat("OfficialYukki")
-            await ASS_CLI_5.join_chat("YukkiSupport")
+            await ASS_CLI_5.join_chat("VietnamHub")
+            await ASS_CLI_5.join_chat("Vetmang")
         except:
             pass
         console.print(f"├[red] Assistant 5 Started as {ASSNAME5}!")
@@ -201,20 +201,20 @@ async def initiate_bot():
         try:
             await LOG_CLIENT.send_message(
                 LOG_GROUP_ID,
-                "<b>Congrats!! Logger Client has started successfully!</b>",
+                "<b>Chúc mừng!! Logger Client đã bắt đầu thành công!</b>",
             )
         except Exception as e:
             print(
-                "\nLogger Client has failed to access the log Channel. Make sure that you have added your Logger Account to your log channel and promoted as admin!"
+                "\nLogger Client không truy cập được vào Kênh nhật ký. Đảm bảo rằng bạn đã thêm Tài khoản người ghi nhật ký vào kênh nhật ký của mình và được thăng cấp làm quản trị viên!"
             )
             console.print(f"\n[red]Stopping Bot")
             return
         try:
-            await LOG_CLIENT.join_chat("OfficialYukki")
-            await LOG_CLIENT.join_chat("YukkiSupport")
+            await LOG_CLIENT.join_chat("VietnamHub")
+            await LOG_CLIENT.join_chat("Vetmang")
         except:
             pass
-    console.print(f"└[red] Yukki Music Bot Boot Completed.")
+    console.print(f"└[red] Slime Khởi động Bot âm nhạc đã hoàn tất.")
     if STRING1 != "None":
         await pytgcalls1.start()
     if STRING2 != "None":
@@ -231,9 +231,9 @@ async def initiate_bot():
 
 home_text_pm = f"""Hello ,
 My name is {BOT_NAME}.
-A Telegram Music+Video Streaming bot with some useful features.
+Một bot Phát nhạc + Video Telegram với một số tính năng hữu ích.
 
-All commands can be used with: / """
+Tất cả các lệnh có thể được sử dụng với: / """
 
 
 @app.on_message(filters.command("help") & filters.private)
@@ -278,7 +278,7 @@ async def start_command(_, message):
                     except Exception:
                         continue
             if not text:
-                await message.reply_text("No Sudo Users")
+                await message.reply_text("Không có người dùng Sudo")
             else:
                 await message.reply_text(text)
             if await is_on_off(5):
@@ -287,7 +287,7 @@ async def start_command(_, message):
                 umention = f"[{sender_name}](tg://user?id={int(sender_id)})"
                 return await LOG_CLIENT.send_message(
                     LOG_GROUP_ID,
-                    f"{message.from_user.mention} has just started bot to check <code>SUDOLIST</code>\n\n**USER ID:** {sender_id}\n**USER NAME:** {sender_name}",
+                    f"{message.from_user.mention} vừa mới bắt đầu bot để kiểm tra <code>SUDOLIST</code>\n\n**USER ID:** {sender_id}\n**USER NAME:** {sender_name}",
                 )
         if name == "help":
             text, keyboard = await help_parser(message.from_user.mention)
@@ -298,7 +298,7 @@ async def start_command(_, message):
                 reply_markup=keyboard,
             )
         if name[0] == "i":
-            m = await message.reply_text("🔎 Fetching Info!")
+            m = await message.reply_text("🔎 Tìm nạp thông tin!")
             query = (str(name)).replace("info_", "", 1)
             query = f"https://www.youtube.com/watch?v={query}"
             results = VideosSearch(query, limit=1)
@@ -312,26 +312,23 @@ async def start_command(_, message):
                 link = result["link"]
                 published = result["publishedTime"]
             searched_text = f"""
-🔍__**Video Track Information**__
+🔍__**Thông tin bản nhạc video**__
 
-❇️**Title:** {title}
+❇️**Tiêu đề:** {title}
 
-⏳**Duration:** {duration} Mins
+⏳**Thời lượng:** {duration} Mins
 👀**Views:** `{views}`
-⏰**Published Time:** {published}
-🎥**Channel Name:** {channel}
-📎**Channel Link:** [Visit From Here]({channellink})
-🔗**Video Link:** [Link]({link})
+⏰**Thời gian xuất bản:** {published}
 
-⚡️ __Searched Powered By {BOT_NAME}__"""
+⚡️ __Tìm kiếm được cung cấp bởi {BOT_NAME}__"""
             key = InlineKeyboardMarkup(
                 [
                     [
                         InlineKeyboardButton(
-                            text="🎥 Watch Youtube Video", url=f"{link}"
+                            text="🎥 Xem video trên Youtube", url=f"{link}"
                         ),
                         InlineKeyboardButton(
-                            text="🔄 Close", callback_data="close"
+                            text="🔄 Đóng", callback_data="close"
                         ),
                     ],
                 ]
@@ -350,7 +347,7 @@ async def start_command(_, message):
                 umention = f"[{sender_name}](tg://user?id={int(sender_id)})"
                 return await LOG_CLIENT.send_message(
                     LOG_GROUP_ID,
-                    f"{message.from_user.mention} has just started bot to check <code>VIDEO INFORMATION</code>\n\n**USER ID:** {sender_id}\n**USER NAME:** {sender_name}",
+                    f"{message.from_user.mention} vừa mới bắt đầu bot để kiểm tra <code>THÔNG TIN VIDEO</code>\n\n**USER ID:** {sender_id}\n**USER NAME:** {sender_name}",
                 )
             return
     out = private_panel()
@@ -364,7 +361,7 @@ async def start_command(_, message):
         umention = f"[{sender_name}](tg://user?id={int(sender_id)})"
         return await LOG_CLIENT.send_message(
             LOG_GROUP_ID,
-            f"{message.from_user.mention} has just started Bot.\n\n**USER ID:** {sender_id}\n**USER NAME:** {sender_name}",
+            f"{message.from_user.mention} vừa mới khởi động Bot.\n\n**USER ID:** {sender_id}\n**USER NAME:** {sender_name}",
         )
     return
 
@@ -375,9 +372,9 @@ async def help_parser(name, keyboard=None):
     return (
         """Hello {first_name},
 
-Click on the buttons for more information.
+Bấm vào các nút để biết thêm thông tin.
 
-All commands can be used with: /
+Tất cả các lệnh có thể được sử dụng với: /
 """.format(
             first_name=name
         ),
@@ -401,9 +398,9 @@ async def help_button(client, query):
     create_match = re.match(r"help_create", query.data)
     top_text = f"""Hello {query.from_user.first_name},
 
-Click on the buttons for more information.
+Bấm vào các nút để biết thêm thông tin.
 
-All commands can be used with: /
+Tất cả các lệnh có thể được sử dụng với: /
  """
     if mod_match:
         module = mod_match.group(1)
@@ -417,10 +414,10 @@ All commands can be used with: /
             [
                 [
                     InlineKeyboardButton(
-                        text="↪️ Back", callback_data="help_back"
+                        text="↪️ Quay lại", callback_data="help_back"
                     ),
                     InlineKeyboardButton(
-                        text="🔄 Close", callback_data="close"
+                        text="🔄 Đóng", callback_data="close"
                     ),
                 ],
             ]
