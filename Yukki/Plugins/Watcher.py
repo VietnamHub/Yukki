@@ -35,9 +35,9 @@ async def chat_watcher_func(_, message):
     if await is_gbanned_user(userid):
         try:
             await message.chat.kick_member(userid)
-            await message.delete()
         except Exception:
             return
+        await message.delete()
         await message.reply_text(
             f"{checking} bị quản trị viên cấm toàn bộ nhóm và đã bị loại ra khỏi nhóm này."
         )
