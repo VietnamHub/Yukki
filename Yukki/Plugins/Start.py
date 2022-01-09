@@ -27,20 +27,20 @@ from Yukki.Utilities.ping import get_readable_time
 
 welcome_group = 2
 
-__MODULE__ = "Essentials"
+__MODULE__ = "Những điều cần thiết"
 __HELP__ = """
 
 
 /start 
-- Start the Bot.
+- Khởi động Bot.
 
 
 /help 
-- Get Commands Helper Menu.
+- Nhận Menu Trình trợ giúp Lệnh.
 
 
 /settings 
-- Get Settings button.
+- Nhận nút Cài đặt.
 """
 
 
@@ -56,7 +56,7 @@ async def welcome(_, message: Message):
             if member.id == BOT_ID:
                 if chat_id in await blacklisted_chats():
                     await message.reply_text(
-                        f"Hushh, Your chat group[{message.chat.title}] has been blacklisted!\n\nAsk any Sudo User to whitelist your chat"
+                        f"Hushh, nhóm trò chuyện của bạn [{message.chat.title}] đã được đưa vào danh sách đen!\n\nYêu cầu bất kỳ Người dùng Sudo nào đưa cuộc trò chuyện của bạn vào danh sách trắng"
                     )
                     return await app.leave_chat(chat_id)
                 _assistant = await get_assistant(message.chat.id, "assistant")
@@ -76,18 +76,18 @@ async def welcome(_, message: Message):
                 ) = await get_assistant_details(ran_ass)
                 out = start_pannel()
                 await message.reply_text(
-                    f"Welcome To {MUSIC_BOT_NAME}\n\nPromote me as administrator in your group otherwise I will not function properly.\n\nAssistant Username:- @{ASS_USERNAME}\nAssistant ID:- {ASS_ID}",
+                    f"Chào mừng bạn đến {MUSIC_BOT_NAME}\n\nThăng chức tôi làm quản trị viên trong nhóm của bạn nếu không tôi sẽ không hoạt động bình thường.\n\nTên người dùng Trợ lý:- @{ASS_USERNAME}\nID trợ lý:- {ASS_ID}",
                     reply_markup=InlineKeyboardMarkup(out[1]),
                 )
             if member.id in ASSIDS:
                 return await remove_active_chat(chat_id)
             if member.id in OWNER_ID:
                 return await message.reply_text(
-                    f"{MUSIC_BOT_NAME}'s Owner[{member.mention}] has just joined your chat."
+                    f"{MUSIC_BOT_NAME}'s Owner[{member.mention}] vừa tham gia cuộc trò chuyện của bạn."
                 )
             if member.id in SUDOERS:
                 return await message.reply_text(
-                    f"A member of {MUSIC_BOT_NAME}'s Sudo User[{member.mention}] has just joined your chat."
+                    f"Một thành viên của {MUSIC_BOT_NAME} - [{member.mention}] vừa tham gia cuộc trò chuyện của bạn."
                 )
             return
         except:
@@ -101,7 +101,7 @@ async def useradd(_, message: Message):
     await asyncio.gather(
         message.delete(),
         message.reply_text(
-            f"Thanks for having me in {message.chat.title}.\n{MUSIC_BOT_NAME} is alive.\n\nFor any assistance or help, checkout our support group and channel.",
+            f"Cảm ơn vì đã đưa tôi vào {message.chat.title}.\n{MUSIC_BOT_NAME} còn sống.\n\nĐể được hỗ trợ hoặc giúp đỡ, hãy xem kênh và nhóm hỗ trợ của chúng tôi.",
             reply_markup=InlineKeyboardMarkup(out[1]),
         ),
     )
@@ -135,7 +135,7 @@ async def okaybhai(_, CallbackQuery):
     await CallbackQuery.answer("Going Back ...")
     out = start_pannel()
     await CallbackQuery.edit_message_text(
-        text=f"Thanks for having me in {CallbackQuery.message.chat.title}.\n{MUSIC_BOT_NAME}is alive.\n\nFor any assistance or help, checkout our support group and channel.",
+        text=f"Cảm ơn vì đã đưa tôi vào {CallbackQuery.message.chat.title}.\n{MUSIC_BOT_NAME}còn sống. \n\nĐể được hỗ trợ hoặc giúp đỡ, hãy xem kênh và nhóm hỗ trợ của chúng tôi..",
         reply_markup=InlineKeyboardMarkup(out[1]),
     )
 
@@ -173,12 +173,12 @@ async def EVE(_, CallbackQuery):
         await CallbackQuery.answer("Changes Saved")
         await add_nonadmin_chat(chat_id)
         await CallbackQuery.edit_message_text(
-            text=f"{text}\n\nAdmins Commands Mode to **Everyone**\n\nNow anyone present in this group can skip, pause, resume, stop music.\n\nChanges Done By @{checking}",
+            text=f"{text}\n\nChế độ quản trị viên lệnh thành **Mọi người**\n\nGiờ đây, bất kỳ ai có mặt trong nhóm này đều có thể bỏ qua, tạm dừng, tiếp tục, dừng nhạc.\n\nChanges Done By @{checking}",
             reply_markup=InlineKeyboardMarkup(buttons),
         )
     else:
         await CallbackQuery.answer(
-            "Commands Mode is Already Set To EVERYONE", show_alert=True
+            "Chế độ lệnh đã được đặt cho MỌI NGƯỜI", show_alert=True
         )
 
 
@@ -191,13 +191,13 @@ async def AMS(_, CallbackQuery):
     is_non_admin = await is_nonadmin_chat(chat_id)
     if not is_non_admin:
         await CallbackQuery.answer(
-            "Commands Mode is Already Set To ADMINS ONLY", show_alert=True
+            "Chế độ lệnh đã được đặt thành CHỈ QUẢN TRỊ", show_alert=True
         )
     else:
         await CallbackQuery.answer("Changes Saved")
         await remove_nonadmin_chat(chat_id)
         await CallbackQuery.edit_message_text(
-            text=f"{text}\n\nSet Commands Mode to **Admins**\n\nNow only Admins present in this group can skip, pause, resume, stop musics.\n\nChanges Done By @{checking}",
+            text=f"{text}\n\nĐặt Chế độ lệnh thành **Quản trị viên**\n\nGiờ đây, chỉ Quản trị viên có mặt trong nhóm này mới có thể bỏ qua, tạm dừng, tiếp tục, dừng nhạc.\n\nChanges Done By @{checking}",
             reply_markup=InlineKeyboardMarkup(buttons),
         )
 
@@ -213,7 +213,7 @@ async def start_markup_check(_, CallbackQuery):
     c_id = CallbackQuery.message.chat.id
     chat_id = CallbackQuery.message.chat.id
     if command == "AQ":
-        await CallbackQuery.answer("Already in Best Quality", show_alert=True)
+        await CallbackQuery.answer("Đã có chất lượng tốt nhất", show_alert=True)
     if command == "AV":
         await CallbackQuery.answer("Bot Settings ...")
         text, buttons = volmarkup()
@@ -232,7 +232,7 @@ async def start_markup_check(_, CallbackQuery):
         else:
             current = "Everyone"
         await CallbackQuery.edit_message_text(
-            text=f"{text}\n\n**Group:** {c_title}\n\nCurrently Who Can Use {MUSIC_BOT_NAME}:- **{current}**\n\n**⁉️ What is This?**\n\n**👥 Everyone :-**Anyone can use {MUSIC_BOT_NAME}'s commands(skip, pause, resume etc) present in this group.\n\n**🙍 Admin Only :-**  Only the admins and authorized users can use all commands of {MUSIC_BOT_NAME}.",
+            text=f"{text}\n\n**Group:** {c_title}\n\nHiện tại ai có thể sử dụng {MUSIC_BOT_NAME}:- **{current}**\n\n**⁉️ Cái này là cái gì?**\n\n**👥 Tất cả mọi người :-**Bất kỳ ai cũng có thể sử dụng {MUSIC_BOT_NAME} các lệnh của (bỏ qua, tạm dừng, tiếp tục, v.v.) có trong nhóm này.\n\n**🙍 Chỉ dành cho quản trị viên :-**  Chỉ quản trị viên và người dùng được ủy quyền mới có thể sử dụng tất cả các lệnh của {MUSIC_BOT_NAME}.",
             reply_markup=InlineKeyboardMarkup(buttons),
         )
     if command == "Dashboard":
@@ -241,7 +241,7 @@ async def start_markup_check(_, CallbackQuery):
         _check = await get_start(c_id, "assistant")
         volume = _check["volume"]
         await CallbackQuery.edit_message_text(
-            text=f"{text}\n\n**Group:** {c_title}\n**Group ID:** {c_id}\n**Volume Level:** {volume}%\n\nCheck {MUSIC_BOT_NAME}'s System Stats In the DashBoard Here! More Functions adding very soon! Keep on Checking Support Channel.",
+            text=f"{text}\n\n**Group:** {c_title}\n**Group ID:** {c_id}\n**Volume Level:** {volume}%\n\nCheck {MUSIC_BOT_NAME}'s Thống kê Hệ thống Trong DashBoard Tại đây! Nhiều chức năng sẽ sớm được bổ sung! Tiếp tục kiểm tra kênh hỗ trợ.",
             reply_markup=InlineKeyboardMarkup(buttons),
         )
     if command == "Custommarkup":
@@ -250,7 +250,7 @@ async def start_markup_check(_, CallbackQuery):
         _check = await get_start(c_id, "assistant")
         volume = _check["volume"]
         await CallbackQuery.edit_message_text(
-            text=f"{text}\n\n**Group:** {c_title}\n**Group ID:** {c_id}\n**Volume Level:** {volume}%\n**Audio Quality:** Default Best",
+            text=f"{text}\n\n**Group:** {c_title}\n**Group ID:** {c_id}\n**Volume Level:** {volume}%\n**Chất lượng âm thanh:** Mặc định Tốt nhất",
             reply_markup=InlineKeyboardMarkup(buttons),
         )
     if command == "LV":
@@ -260,9 +260,9 @@ async def start_markup_check(_, CallbackQuery):
         volume = 25
         try:
             await Yukki.pytgcalls.change_volume_call(c_id, volume)
-            await CallbackQuery.answer("Setting Audio Changes ...")
+            await CallbackQuery.answer("Đặt thay đổi âm thanh ...")
         except:
-            return await CallbackQuery.answer("No active Group Call...")
+            return await CallbackQuery.answer("Không có cuộc gọi nhóm nào đang hoạt động...")
         await save_start(c_id, "assistant", assis)
         text, buttons = volmarkup()
         await CallbackQuery.edit_message_text(
@@ -276,9 +276,9 @@ async def start_markup_check(_, CallbackQuery):
         volume = 50
         try:
             await Yukki.pytgcalls.change_volume_call(c_id, volume)
-            await CallbackQuery.answer("Setting Audio Changes ...")
+            await CallbackQuery.answer("Đặt thay đổi âm thanh ...")
         except:
-            return await CallbackQuery.answer("No active Group Call...")
+            return await CallbackQuery.answer("Không có cuộc gọi nhóm nào đang hoạt động...")
         await save_start(c_id, "assistant", assis)
         text, buttons = volmarkup()
         await CallbackQuery.edit_message_text(
@@ -292,9 +292,9 @@ async def start_markup_check(_, CallbackQuery):
         volume = 100
         try:
             await Yukki.pytgcalls.change_volume_call(c_id, volume)
-            await CallbackQuery.answer("Setting Audio Changes ...")
+            await CallbackQuery.answer("Đặt thay đổi âm thanh ...")
         except:
-            return await CallbackQuery.answer("No active Group Call...")
+            return await CallbackQuery.answer("Không có cuộc gọi nhóm nào đang hoạt động...")
         await save_start(c_id, "assistant", assis)
         text, buttons = volmarkup()
         await CallbackQuery.edit_message_text(
@@ -308,9 +308,9 @@ async def start_markup_check(_, CallbackQuery):
         volume = 200
         try:
             await Yukki.pytgcalls.change_volume_call(c_id, volume)
-            await CallbackQuery.answer("Setting Audio Changes ...")
+            await CallbackQuery.answer("Đặt thay đổi âm thanh ...")
         except:
-            return await CallbackQuery.answer("No active Group Call...")
+            return await CallbackQuery.answer("Không có cuộc gọi nhóm nào đang hoạt động...")
         await save_start(c_id, "assistant", assis)
         text, buttons = volmarkup()
         await CallbackQuery.edit_message_text(
@@ -352,9 +352,9 @@ async def start_markup_check(_, CallbackQuery):
         }
         try:
             await Yukki.pytgcalls.change_volume_call(c_id, volume)
-            await CallbackQuery.answer("Setting Audio Changes ...")
+            await CallbackQuery.answer("Đặt thay đổi âm thanh ...")
         except:
-            return await CallbackQuery.answer("No active Group Call...")
+            return await CallbackQuery.answer("Không có cuộc gọi nhóm nào đang hoạt động...")
         await save_start(c_id, "assistant", assis)
         text, buttons = custommarkup()
         await CallbackQuery.edit_message_text(
@@ -374,9 +374,9 @@ async def start_markup_check(_, CallbackQuery):
         }
         try:
             await Yukki.pytgcalls.change_volume_call(c_id, volume)
-            await CallbackQuery.answer("Setting Audio Changes ...")
+            await CallbackQuery.answer("Đặt thay đổi âm thanh ...")
         except:
-            return await CallbackQuery.answer("No active Group Call...")
+            return await CallbackQuery.answer("Không có cuộc gọi nhóm nào đang hoạt động...")
         await save_start(c_id, "assistant", assis)
         text, buttons = custommarkup()
         await CallbackQuery.edit_message_text(
@@ -396,9 +396,9 @@ async def start_markup_check(_, CallbackQuery):
         }
         try:
             await Yukki.pytgcalls.change_volume_call(c_id, volume)
-            await CallbackQuery.answer("Setting Audio Changes ...")
+            await CallbackQuery.answer("Đặt thay đổi âm thanh ...")
         except:
-            return await CallbackQuery.answer("No active Group Call...")
+            return await CallbackQuery.answer("Không có cuộc gọi nhóm nào đang hoạt động...")
         await save_start(c_id, "assistant", assis)
         text, buttons = custommarkup()
         await CallbackQuery.edit_message_text(
@@ -440,9 +440,9 @@ async def start_markup_check(_, CallbackQuery):
         }
         try:
             await Yukki.pytgcalls.change_volume_call(c_id, volume)
-            await CallbackQuery.answer("Setting Audio Changes ...")
+            await CallbackQuery.answer("Đặt thay đổi âm thanh ...")
         except:
-            return await CallbackQuery.answer("No active Group Call...")
+            return await CallbackQuery.answer("Không có cuộc gọi nhóm nào đang hoạt động...")
         await save_start(c_id, "assistant", assis)
         text, buttons = custommarkup()
         await CallbackQuery.edit_message_text(
@@ -455,15 +455,15 @@ async def start_markup_check(_, CallbackQuery):
         _playlist = await get_authuser_names(CallbackQuery.message.chat.id)
         if not _playlist:
             return await CallbackQuery.edit_message_text(
-                text=f"{text}\n\nNo Authorized Users Found\n\nYou can allow any non-admin to use my admin commands by /auth and delete by using /unauth",
+                text=f"{text}\n\nKhông tìm thấy người dùng được ủy quyền\n\nBạn có thể cho phép bất kỳ người không phải quản trị viên nào sử dụng các lệnh quản trị viên của tôi bằng cách /auth và xóa bằng cách sử dụng /unauth",
                 reply_markup=InlineKeyboardMarkup(buttons),
             )
         else:
             j = 0
             await CallbackQuery.edit_message_text(
-                "Fetching Authorised Users... Please Wait"
+                "Tìm nạp người dùng được ủy quyền ... Vui lòng đợi"
             )
-            msg = f"**Authorised Users List[AUL]:**\n\n"
+            msg = f"**Danh sách người dùng được ủy quyền[AUL]:**\n\n"
             for note in _playlist:
                 _note = await get_authuser(
                     CallbackQuery.message.chat.id, note
@@ -479,7 +479,7 @@ async def start_markup_check(_, CallbackQuery):
                 except Exception:
                     continue
                 msg += f"{j}➤ {user}[`{user_id}`]\n"
-                msg += f"    ┗ Added By:- {admin_name}[`{admin_id}`]\n\n"
+                msg += f"    ┗ Được thêm bởi:- {admin_name}[`{admin_id}`]\n\n"
             await CallbackQuery.edit_message_text(
                 msg, reply_markup=InlineKeyboardMarkup(buttons)
             )
@@ -487,12 +487,12 @@ async def start_markup_check(_, CallbackQuery):
         bot_uptimee = int(time.time() - bot_start_time)
         Uptimeee = f"{get_readable_time((bot_uptimee))}"
         await CallbackQuery.answer(
-            f"Bot's Uptime: {Uptimeee}", show_alert=True
+            f"Thời gian hoạt động của Bot: {Uptimeee}", show_alert=True
         )
     if command == "CPT":
         cpue = psutil.cpu_percent(interval=0.5)
         await CallbackQuery.answer(
-            f"Bot's Cpu Usage: {cpue}%", show_alert=True
+            f"Cpu của Bot: {cpue}%", show_alert=True
         )
     if command == "RAT":
         meme = psutil.virtual_memory().percent
@@ -502,5 +502,5 @@ async def start_markup_check(_, CallbackQuery):
     if command == "DIT":
         diske = psutil.disk_usage("/").percent
         await CallbackQuery.answer(
-            f"Yukki Disk Usage: {diske}%", show_alert=True
+            f"Sử dụng đĩa: {diske}%", show_alert=True
         )
