@@ -276,9 +276,8 @@ async def ban_globally(_, message):
                 except Exception:
                     pass
             ban_text = f"""
-__**CẬP NHẬT BLACKLIST {MUSIC_BOT_NAME}**__
-**Người dùng:** {user.mention}
-**ID:** `{user.id}`
+__**CẬP NHẬT BLACKLIST**__
+**Người dùng:** {user.mention} // `{user.id}`
 **Tổng nhóm bị cấm:** {number_of_chats} nhóm"""
             try:
                 await m.delete()
@@ -324,9 +323,8 @@ __**CẬP NHẬT BLACKLIST {MUSIC_BOT_NAME}**__
                 except Exception:
                     pass
             ban_text = f"""
-__**CẬP NHẬT BLACKLIST {MUSIC_BOT_NAME}**__
-**Người dùng:** {mention}
-**ID:** `{user_id}`
+__**CẬP NHẬT BLACKLIST**__
+**Người dùng:** {mention} // `{user_id}`
 **Đã bị cấm tổng:** {number_of_chats} nhóm"""
             try:
                 await m.delete()
