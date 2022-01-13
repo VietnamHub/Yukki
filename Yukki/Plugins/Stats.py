@@ -31,8 +31,8 @@ __HELP__ = """
 
 
 /stats
-- Check the Stats of Bot.
-- Gets the stat of MongoDb , Assistant, System etc
+- Kiểm tra số liệu thống kê của Bot.
+- Nhận chỉ số của MongoDb, Trợ lý, Hệ thống, v.v.
 """
 
 
@@ -63,7 +63,7 @@ async def gstats(_, message):
     end = datetime.now()
     resp = (end - start).microseconds / 1000
     smex = f"""
-[•]<u>**General Stats**</u>
+[•]<u>**Số liệu thống kê chung**</u>
 
 Ping: `⚡{resp} ms`
 {uptime}
@@ -80,7 +80,7 @@ Ping: `⚡{resp} ms`
 async def stats_markup(_, CallbackQuery):
     command = CallbackQuery.matches[0].group(1)
     if command == "sys_stats":
-        await CallbackQuery.answer("Getting System Stats...", show_alert=True)
+        await CallbackQuery.answer("Nhận số liệu thống kê hệ thống...", show_alert=True)
         sc = platform.system()
         arch = platform.machine()
         p_core = psutil.cpu_count(logical=False)
@@ -93,22 +93,22 @@ async def stats_markup(_, CallbackQuery):
                 cpu_freq = f"{round(cpu_freq, 2)}MHz"
         except:
             cpu_freq = "Unable to Fetch"
-        cupc = "**CPU Usage Per Core:**\n"
+        cupc = "**Mức sử dụng CPU trên mỗi lõi:**\n"
         for i, percentage in enumerate(psutil.cpu_percent(percpu=True)):
             cupc += f"Core {i}  : {percentage}%\n"
-        cupc += "**Total CPU Usage:**\n"
-        cupc += f"All Cores Usage: {psutil.cpu_percent()}%\n"
+        cupc += "**Tổng mức sử dụng CPU:**\n"
+        cupc += f"Tất cả các lõi sử dụng: {psutil.cpu_percent()}%\n"
         ram = (
             str(round(psutil.virtual_memory().total / (1024.0 ** 3))) + " GB"
         )
         bot_uptime = int(time.time() - boottime)
         uptime = f"{get_readable_time((bot_uptime))}"
         smex = f"""
-[•]<u>**System Stats**</u>
+[•]<u>**Thống kê Hệ thống**</u>
 
 **{MUSIC_BOT_NAME} Uptime:** {uptime}
-**System Proc:** Online
-**Platform:** {sc}
+**Hệ thống Proc:** Online
+**Nền tảng:** {sc}
 **Architecture:** {arch}
 **Ram:** {ram}
 **Python Ver:** {pyver.split()[0]}
@@ -116,16 +116,16 @@ async def stats_markup(_, CallbackQuery):
 
 [•]<u>**CPU Stats**</u>
 
-**Physical Cores:** {p_core}
-**Total Cores:** {t_core}
-**Cpu Frequency:** {cpu_freq}
+**Lõi vật lý:** {p_core}
+**Tổng số lõi:** {t_core}
+**Tần số Cpu:** {cpu_freq}
 
 {cupc}
 """
         await CallbackQuery.edit_message_text(smex, reply_markup=stats2)
     if command == "sto_stats":
         await CallbackQuery.answer(
-            "Getting Storage Stats...", show_alert=True
+            "Nhận số liệu thống kê về bộ nhớ...", show_alert=True
         )
         hdd = psutil.disk_usage("/")
         total = hdd.total / (1024.0 ** 3)
@@ -135,11 +135,11 @@ async def stats_markup(_, CallbackQuery):
         free = hdd.free / (1024.0 ** 3)
         free = str(free)
         smex = f"""
-[•]<u>**Storage Stats**</u>
+[•]<u>**Thống kê lưu trữ**</u>
 
-**Storage Avail:** {total[:4]} GiB
-**Storage Used:** {used[:4]} GiB
-**Storage Left:** {free[:4]} GiB"""
+**Lưu trữ còn trống:** {total[:4]} GiB
+**Bộ nhớ đã sử dụng:** {used[:4]} GiB
+**Bộ nhớ còn lại:** {free[:4]} GiB"""
         await CallbackQuery.edit_message_text(smex, reply_markup=stats3)
     if command == "bot_stats":
         await CallbackQuery.answer("Getting Bot Stats...", show_alert=True)
@@ -160,28 +160,28 @@ async def stats_markup(_, CallbackQuery):
         smex = f"""
 [•]<u>**Bot Stats**</u>
 
-**Modules Loaded:** {modules_loaded}
-**GBanned Users:** {blocked}
-**Sudo Users:** {j}
-**Served Chats:** {len(served_chats)}"""
+**Các mô-đun đã được tải:** {modules_loaded}
+**Người dùng GBanned:** {blocked}
+**Người dùng Sudo:** {j}
+**Trò chuyện được Phục vụ:** {len(served_chats)}"""
         await CallbackQuery.edit_message_text(smex, reply_markup=stats4)
     if command == "mongo_stats":
         await CallbackQuery.answer(
-            "Getting MongoDB Stats...", show_alert=True
+            "Nhận số liệu thống kê về MongoDB...", show_alert=True
         )
         try:
             pymongo = MongoClient(MONGO_DB_URI)
         except Exception as e:
             print(e)
             return await CallbackQuery.edit_message_text(
-                "Failed to get Mongo DB stats", reply_markup=stats5
+                "Không tải được số liệu thống kê về Mongo DB", reply_markup=stats5
             )
         try:
             db = pymongo.Yukki
         except Exception as e:
             print(e)
             return await CallbackQuery.edit_message_text(
-                "Failed to get Mongo DB stats", reply_markup=stats5
+                "Không tải được số liệu thống kê về Mongo DB", reply_markup=stats5
             )
         call = db.command("dbstats")
         database = call["db"]
@@ -202,23 +202,23 @@ async def stats_markup(_, CallbackQuery):
 **Mongo Uptime:** {mongouptime[:4]} Days
 **Version:** {mver}
 **Database:** {database}
-**Provider:** {provider}
+**Các nhà cung cấp:** {provider}
 **DB Size:** {datasize[:6]} Mb
-**Storage:** {storage} Mb
-**Collections:** {collections}
+**Kho:** {storage} Mb
+**Bộ sưu tập:** {collections}
 **Keys:** {objects}
-**Total Queries:** `{query}`"""
+**Tổng số truy vấn:** `{query}`"""
         await CallbackQuery.edit_message_text(smex, reply_markup=stats5)
     if command == "gen_stats":
         start = datetime.now()
         uptime = await bot_sys_stats()
         await CallbackQuery.answer(
-            "Getting General Stats...", show_alert=True
+            "Nhận số liệu thống kê chung...", show_alert=True
         )
         end = datetime.now()
-        resp = (end - start).microseconds / 1000
+        resp = (end - start).microseconds / 10
         smex = f"""
-[•]<u>General Stats</u>
+[•]<u>Số liệu thống kê chung</u>
 
 **Ping:** `⚡{resp} ms`
 {uptime}"""
@@ -227,10 +227,10 @@ async def stats_markup(_, CallbackQuery):
         await CallbackQuery.answer()
     if command == "assis_stats":
         await CallbackQuery.answer(
-            "Getting Assistant Stats...", show_alert=True
+            "Nhận số liệu thống kê về Trợ lý ...", show_alert=True
         )
         await CallbackQuery.edit_message_text(
-            "Getting Assistant Stats.. Please Wait...", reply_markup=stats7
+            "Đang nhận số liệu thống kê về Trợ lý .. Vui lòng đợi ...", reply_markup=stats7
         )
         groups_ub = channels_ub = bots_ub = privates_ub = total_ub = 0
         groups_ub2 = channels_ub2 = bots_ub2 = privates_ub2 = total_ub2 = 0
@@ -303,7 +303,7 @@ async def stats_markup(_, CallbackQuery):
                 elif t == "private":
                     privates_ub5 += 1
 
-        msg = "[•]<u>Assistant Stats</u>"
+        msg = "[•]<u>Số liệu thống kê về Trợ lý</u>"
         if STRING1 != "None":
             msg += "\n\n<u>Assistant One:\n</u>"
             msg += f"""**Dialogs:** {total_ub}
