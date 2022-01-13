@@ -20,19 +20,16 @@ __HELP__ = """
 
 
 /playplaylist 
-- Start playing Your Saved Playlist.
-
+- Bắt đầu chơi Danh sách phát đã lưu của bạn.
 
 /playlist 
-- Check Your Saved Playlist On Servers.
-
+- Kiểm tra danh sách phát đã lưu của bạn trên máy chủ.
 
 /delmyplaylist
-- Delete any saved music in your playlist
-
+- Xóa mọi bản nhạc đã lưu trong danh sách phát của bạn
 
 /delgroupplaylist
-- Delete any saved music in your group's playlist [Requires Admin Rights.]
+- Xóa mọi bản nhạc đã lưu trong danh sách phát của nhóm bạn [Yêu cầu Quyền quản trị.]
 """
 
 
@@ -72,7 +69,7 @@ async def play_playlist_cmd(_, message):
             hmo = await message.reply_photo(
                 photo=thumb,
                 caption=(
-                    f"**{MUSIC_BOT_NAME}'s Playlist Feature**\nSelect the Playlist you want to play!.\n\nYou can play someone else's playlist too:-\n- /playplaylist [Username]\n- /playplaylist [USER ID](if user has deleted acc)\n- /playplaylist [Reply to a User]"
+                    f"**{MUSIC_BOT_NAME}'s Tính năng danh sách phát**\nChọn danh sách phát bạn muốn chơi!.\n\nBạn cũng có thể chơi danh sách phát của người khác: -\n- /playplaylist [Username]\n- /playplaylist [USER ID](nếu người dùng đã xóa tài khoản)\n- /playplaylist [Reply to a User]"
                 ),
                 reply_markup=InlineKeyboardMarkup(buttons),
             )
@@ -119,7 +116,7 @@ async def playlist(_, message):
     await message.reply_photo(
         photo=thumb,
         caption=(
-            f"**{MUSIC_BOT_NAME}'s Playlist Feature**\n\nSelect The Playlist, You want to **check!**"
+            f"**{MUSIC_BOT_NAME}'s Tính năng danh sách phát**\n\nChọn danh sách phát, bạn muốn **check!**"
         ),
         reply_markup=InlineKeyboardMarkup(buttons),
     )
