@@ -31,32 +31,32 @@ def bytes(size: float) -> str:
 
 @app.on_message(filters.command("speedtest") & ~filters.edited)
 async def statsguwid(_, message):
-    m = await message.reply_text("Running Speed test")
+    m = await message.reply_text("Kiểm tra tốc độ chạy")
     try:
         test = speedtest.Speedtest()
         test.get_best_server()
-        m = await m.edit("Running Download SpeedTest")
+        m = await m.edit("Chạy SpeedTest Tải xuống")
         test.download()
-        m = await m.edit("Running Upload SpeedTest")
+        m = await m.edit("Chạy Kiểm tra tốc độ tải lên")
         test.upload()
         test.results.share()
         result = test.results.dict()
     except Exception as e:
         return await m.edit(e)
-    m = await m.edit("Sharing SpeedTest Results")
+    m = await m.edit("Chia sẻ kết quả kiểm tra tốc độ")
     path = wget.download(result["share"])
 
-    output = f"""**Speedtest Results**
+    output = f"""**Kết quả Speedtest**
     
 <u>**Client:**</u>
 **__ISP:__** {result['client']['isp']}
-**__Country:__** {result['client']['country']}
+**__Quốc gia:__** {result['client']['country']}
   
 <u>**Server:**</u>
-**__Name:__** {result['server']['name']}
-**__Country:__** {result['server']['country']}, {result['server']['cc']}
-**__Sponsor:__** {result['server']['sponsor']}
-**__Latency:__** {result['server']['latency']}  
+**__Tên:__** {result['server']['name']}
+**__Quốc gia:__** {result['server']['country']}, {result['server']['cc']}
+**__Nhà tài trợ:__** {result['server']['sponsor']}
+**__Độ trễ:__** {result['server']['latency']}  
 **__Ping:__** {result['ping']}"""
     msg = await app.send_photo(
         chat_id=message.chat.id, photo=path, caption=output
