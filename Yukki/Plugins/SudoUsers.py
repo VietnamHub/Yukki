@@ -263,7 +263,7 @@ async def ban_globally(_, message):
             for chat in chats:
                 served_chats.append(int(chat["chat_id"]))
             m = await message.reply_text(
-                f"**Đã thêm {user.mention} vào danh sách đen!**"
+                f"**⏳ Đang tiến hành cấm {user.mention}!**"
             )
             number_of_chats = 0
             for sex in served_chats:
@@ -275,10 +275,7 @@ async def ban_globally(_, message):
                     await asyncio.sleep(int(e.x))
                 except Exception:
                     pass
-            ban_text = f"""
-__**CẬP NHẬT BLACKLIST**__
-**Người dùng:** {user.mention} // `{user.id}`
-**Tổng nhóm bị cấm:** {number_of_chats} nhóm"""
+            ban_text = f"""⛔ {user.mention} đã bị cấm khỏi {number_of_chats} nhóm."""
             try:
                 await m.delete()
             except Exception:
@@ -302,7 +299,7 @@ __**CẬP NHẬT BLACKLIST**__
     else:
         is_gbanned = await is_gbanned_user(user_id)
         if is_gbanned:
-            await message.reply_text("Đã bị cấm.")
+            await message.reply_text("⛔ Đã bị cấm.")
         else:
             await add_gban_user(user_id)
             served_chats = []
@@ -322,10 +319,7 @@ __**CẬP NHẬT BLACKLIST**__
                     await asyncio.sleep(int(e.x))
                 except Exception:
                     pass
-            ban_text = f"""
-__**CẬP NHẬT BLACKLIST**__
-**Người dùng:** {mention} // `{user_id}`
-**Đã bị cấm tổng:** {number_of_chats} nhóm"""
+            ban_text = f"""⛔ Đã cấm {mention} khỏi {number_of_chats} nhóm!"""
             try:
                 await m.delete()
             except Exception:
