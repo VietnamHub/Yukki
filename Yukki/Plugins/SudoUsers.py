@@ -250,12 +250,12 @@ async def ban_globally(_, message):
         from_user = message.from_user
         if user.id == from_user.id:
             return await message.reply_text(
-                "Bạn muốn gban cho mình? Thật ngu ngốc!"
+                "**Bạn muốn gban cho mình? Thật ngu ngốc!**"
             )
         elif user.id == BOT_ID:
-            await message.reply_text("Tôi có nên tự chặn không? Lmao Ded!")
+            await message.reply_text("**Tôi có nên tự chặn không? Lmao Ded!**")
         elif user.id in SUDOERS:
-            await message.reply_text("Bạn muốn chặn một người dùng sudo? KIDXZ")
+            await message.reply_text("**Bạn muốn chặn một người dùng sudo? KIDXZ**")
         else:
             await add_gban_user(user.id)
             served_chats = []
@@ -275,7 +275,7 @@ async def ban_globally(_, message):
                     await asyncio.sleep(int(e.x))
                 except Exception:
                     pass
-            ban_text = f"""⛔ {user.mention} đã bị cấm khỏi {number_of_chats} nhóm."""
+            ban_text = f"""**⛔ {user.mention} đã bị cấm khỏi {number_of_chats} nhóm.**"""
             try:
                 await m.delete()
             except Exception:
@@ -307,7 +307,7 @@ async def ban_globally(_, message):
             for chat in chats:
                 served_chats.append(int(chat["chat_id"]))
             m = await message.reply_text(
-                f"**Đang thêm {mention} vào danh sách đen!**"
+                f"**⏳ Đang tiến hành cấm {mention}!**"
             )
             number_of_chats = 0
             for sex in served_chats:
@@ -319,7 +319,7 @@ async def ban_globally(_, message):
                     await asyncio.sleep(int(e.x))
                 except Exception:
                     pass
-            ban_text = f"""⛔ Đã cấm {mention} khỏi {number_of_chats} nhóm!"""
+            ban_text = f"""**⛔ Đã cấm {mention} khỏi {number_of_chats} nhóm!**"""
             try:
                 await m.delete()
             except Exception:
