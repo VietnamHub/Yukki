@@ -17,6 +17,8 @@ from pyrogram import __version__ as pyrover
 from pyrogram import filters
 from pyrogram.types import Message
 
+from pytgcalls import __version__ as pytgover
+
 from config import (MONGO_DB_URI, MUSIC_BOT_NAME, STRING1, STRING2, STRING3,
                     STRING4, STRING5)
 from Yukki import (ASS_CLI_1, ASS_CLI_2, ASS_CLI_3, ASS_CLI_4, ASS_CLI_5,
@@ -113,6 +115,7 @@ async def stats_markup(_, CallbackQuery):
 **Ram:** {ram}
 **Python Ver:** {pyver.split()[0]}
 **Pyrogram Ver:** {pyrover}
+**PyTgCalls Version:** {pytgover.__version__}
 
 [•]<u>**CPU Stats**</u>
 
