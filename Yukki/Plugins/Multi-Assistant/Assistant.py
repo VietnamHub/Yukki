@@ -57,14 +57,12 @@ async def awaiting_message(client, message):
         f"Hello!.\n\nVui lòng đừng spam tin nhắn , nếu không bạn sẽ bị chặn.\n- Link nhóm: https://t.me/+S5obLSW8ChIxNjA1"
     )
 
+
 @Client.on_message(
     filters.command("approve", prefixes=ASSISTANT_PREFIX)
     & filters.user(SUDOERS)
-    & ~filters.via_bot
-)
-@Client.on_message(
-    filters.command("approve", prefixes=ASSISTANT_PREFIX)
-    & filters.user("me")
+    & ~filters.user("me")
+    & ~filters.me
     & ~filters.via_bot
 )
 async def pm_approve(client, message):
@@ -82,11 +80,8 @@ async def pm_approve(client, message):
 @Client.on_message(
     filters.command("disapprove", prefixes=ASSISTANT_PREFIX)
     & filters.user(SUDOERS)
-    & ~filters.via_bot
-)
-@Client.on_message(
-    filters.command("disapprove", prefixes=ASSISTANT_PREFIX)
-    & filters.user("me")
+    & ~filters.user("me")
+    & ~filters.me
     & ~filters.via_bot
 )
 async def pm_disapprove(client, message):
@@ -105,65 +100,55 @@ async def pm_disapprove(client, message):
                     pass
         return
     await disapprove_pmpermit(user_id)
-    await eor(message, text="User is disapproved to pm")
+    await eor(message, text="Người dùng bị từ chối đến chiều")
 
 
 @Client.on_message(
     filters.command("block", prefixes=ASSISTANT_PREFIX)
     & filters.user(SUDOERS)
-    & ~filters.via_bot
-)
-@Client.on_message(
-    filters.command("block", prefixes=ASSISTANT_PREFIX)
-    & filters.user("me")
+    & ~filters.user("me")
+    & ~filters.me
     & ~filters.via_bot
 )
 async def block_user_func(client, message):
     if not message.reply_to_message:
-        return await eor(message, text="Reply to a user's message to block.")
+        return await eor(message, text="Trả lời tin nhắn của người dùng để chặn.")
     user_id = message.reply_to_message.from_user.id
-    await eor(message, text="Successfully blocked the user")
+    await eor(message, text="Đã chặn thành công người dùng")
     await client.block_user(user_id)
 
 
 @Client.on_message(
     filters.command("unblock", prefixes=ASSISTANT_PREFIX)
     & filters.user(SUDOERS)
-    & ~filters.via_bot
-)
-@Client.on_message(
-    filters.command("unblock", prefixes=ASSISTANT_PREFIX)
-    & filters.user("me")
+    & ~filters.user("me")
+    & ~filters.me
     & ~filters.via_bot
 )
 async def unblock_user_func(client, message):
     if not message.reply_to_message:
         return await eor(
-            message, text="Reply to a user's message to unblock."
+            message, text="Trả lời tin nhắn của người dùng để hủy phân bổ."
         )
     user_id = message.reply_to_message.from_user.id
     await client.unblock_user(user_id)
-    await eor(message, text="Successfully Unblocked the user")
-
+    await eor(message, text="Đã bỏ chặn thành công người dùng")
 
 
 @Client.on_message(
     filters.command("pfp", prefixes=ASSISTANT_PREFIX)
     & filters.user(SUDOERS)
-    & ~filters.via_bot
-)
-@Client.on_message(
-    filters.command("pfp", prefixes=ASSISTANT_PREFIX)
-    & filters.user("me")
+    & ~filters.user("me")
+    & ~filters.me
     & ~filters.via_bot
 )
 async def set_pfp(client, message):
     if not message.reply_to_message or not message.reply_to_message.photo:
-        return await eor(message, text="Reply to a photo.")
+        return await eor(message, text="Trả lời một bức ảnh.")
     photo = await message.reply_to_message.download()
     try:
         await client.set_profile_photo(photo=photo)
-        await eor(message, text="Successfully Changed PFP.")
+        await eor(message, text="Đã thay đổi thành công PFP.")
     except Exception as e:
         await eor(message, text=e)
 
@@ -171,25 +156,22 @@ async def set_pfp(client, message):
 @Client.on_message(
     filters.command("bio", prefixes=ASSISTANT_PREFIX)
     & filters.user(SUDOERS)
-    & ~filters.via_bot
-)
-@Client.on_message(
-    filters.command("bio", prefixes=ASSISTANT_PREFIX)
-    & filters.user("me")
+    & ~filters.user("me")
+    & ~filters.me
     & ~filters.via_bot
 )
 async def set_bio(client, message):
     if len(message.command) == 1:
-        return await eor(message, text="Give some text to set as bio.")
+        return await eor(message, text="Cung cấp một số văn bản để đặt làm tiểu sử.")
     elif len(message.command) > 1:
         bio = message.text.split(None, 1)[1]
         try:
             await client.update_profile(bio=bio)
-            await eor(message, text="Changed Bio.")
+            await eor(message, text="Đã thay đổi tiểu sử.")
         except Exception as e:
             await eor(message, text=e)
     else:
-        return await eor(message, text="Give some text to set as bio.")
+        return await eor(message, text="Cung cấp một số văn bản để đặt làm tiểu sử..")
 
 
 async def eor(msg: Message, **kwargs):
@@ -200,4 +182,3 @@ async def eor(msg: Message, **kwargs):
     )
     spec = getfullargspec(func.__wrapped__).args
     return await func(**{k: v for k, v in kwargs.items() if k in spec})
-  
