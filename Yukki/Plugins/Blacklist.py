@@ -4,27 +4,6 @@ from pyrogram.types import Message
 from Yukki import SUDOERS, app
 from Yukki.Database import blacklist_chat, blacklisted_chats, whitelist_chat
 
-__MODULE__ = "Danh sách đen"
-__HELP__ = """
-
-
-/blacklistedchat 
-- Kiểm tra các cuộc trò chuyện trong danh sách đen của Bot.
-
-
-**Note:**
-Chỉ dành cho người dùng Sudo.
-
-
-/blacklistchat [CHAT_ID] 
-- Đưa mọi cuộc trò chuyện vào danh sách cấm sử dụng Music Bot
-
-
-/whitelistchat [CHAT_ID] 
-- Đưa mọi cuộc trò chuyện vào danh sách đen không được sử dụng Music Bot
-
-"""
-
 
 @app.on_message(filters.command("blacklistchat") & filters.user(SUDOERS))
 async def blacklist_chat_func(_, message: Message):
@@ -34,13 +13,13 @@ async def blacklist_chat_func(_, message: Message):
         )
     chat_id = int(message.text.strip().split()[1])
     if chat_id in await blacklisted_chats():
-        return await message.reply_text("Trò chuyện đã được đưa vào danh sách đen.")
+        return await message.reply_text("Chat is already blacklisted.")
     blacklisted = await blacklist_chat(chat_id)
     if blacklisted:
         return await message.reply_text(
-            "Nhóm đã được đưa vào danh sách đen thành công"
+            "Chat has been successfully blacklisted"
         )
-    await message.reply_text("Đã xảy ra lỗi, hãy kiểm tra nhật ký.")
+    await message.reply_text("Something wrong happened, check logs.")
 
 
 @app.on_message(filters.command("whitelistchat") & filters.user(SUDOERS))
@@ -51,18 +30,18 @@ async def whitelist_chat_func(_, message: Message):
         )
     chat_id = int(message.text.strip().split()[1])
     if chat_id not in await blacklisted_chats():
-        return await message.reply_text("Trò chuyện đã được đưa vào danh sách trắng.")
+        return await message.reply_text("Chat is already whitelisted.")
     whitelisted = await whitelist_chat(chat_id)
     if whitelisted:
         return await message.reply_text(
-            "Nhóm đã được đưa vào danh sách trắng thành công"
+            "Chat has been successfully whitelisted"
         )
-    await message.reply_text("Đã xảy ra lỗi, hãy kiểm tra nhật ký.")
+    await message.reply_text("Something wrong happened, check logs.")
 
 
 @app.on_message(filters.command("blacklistedchat"))
 async def blacklisted_chats_func(_, message: Message):
-    text = "**Trò chuyện trong danh sách đen:**\n\n"
+    text = "**Blacklisted Chats:**\n\n"
     j = 0
     for count, chat_id in enumerate(await blacklisted_chats(), 1):
         try:
@@ -72,6 +51,6 @@ async def blacklisted_chats_func(_, message: Message):
         j = 1
         text += f"**{count}. {title}** [`{chat_id}`]\n"
     if j == 0:
-        await message.reply_text("Không có cuộc trò chuyện trong danh sách đen")
+        await message.reply_text("No Blacklisted Chats")
     else:
         await message.reply_text(text)
