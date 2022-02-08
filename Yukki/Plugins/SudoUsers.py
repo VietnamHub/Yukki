@@ -270,7 +270,7 @@ async def logger(_, message):
 async def ban_globally(_, message):
     if not message.reply_to_message:
         if len(message.command) < 2:
-            await message.reply_text("**Usage:**\n/gban [USERNAME | USER_ID]")
+            await message.reply_text("**Không tìm thấy người dùng. Có thể cung cấp ID người đó không?**")
             return
         user = message.text.split(None, 2)[1]
         if "@" in user:
@@ -279,12 +279,12 @@ async def ban_globally(_, message):
         from_user = message.from_user
         if user.id == from_user.id:
             return await message.reply_text(
-                "You want to gban yourself? How Fool!"
+                "Bạn muốn gban cho mình? Thật ngu ngốc!"
             )
         elif user.id == BOT_ID:
-            await message.reply_text("Should i block myself? Lmao Ded!")
+            await message.reply_text("Tôi có nên tự chặn không? Lmao Ded!")
         elif user.id in SUDOERS:
-            await message.reply_text("You want to block a sudo user? KIDXZ")
+            await message.reply_text("Bạn muốn chặn một người dùng sudo? KIDXZ ")
         else:
             await add_gban_user(user.id)
             served_chats = []
@@ -292,7 +292,7 @@ async def ban_globally(_, message):
             for chat in chats:
                 served_chats.append(int(chat["chat_id"]))
             m = await message.reply_text(
-                f"**Initializing Global Ban on {user.mention}**\n\nExpected Time : {len(served_chats)}"
+                f"**Khởi tạo lệnh cấm {user.mention} khỏi toàn bộ nhóm!**\n\nThời gian mong đợi : {len(served_chats)}"
             )
             number_of_chats = 0
             for sex in served_chats:
@@ -304,14 +304,7 @@ async def ban_globally(_, message):
                     await asyncio.sleep(int(e.x))
                 except Exception:
                     pass
-            ban_text = f"""
-__**New Global Ban on {MUSIC_BOT_NAME}**__
-
-**Origin:** {message.chat.title} [`{message.chat.id}`]
-**Sudo User:** {from_user.mention}
-**Banned User:** {user.mention}
-**Banned User ID:** `{user.id}`
-**Chats:** {number_of_chats}"""
+            ban_text = f"""{from_user.mention} đã cấm {user.mention} [`{user.id}`] khỏi {number_of_chats} nhóm"""
             try:
                 await m.delete()
             except Exception:
@@ -327,15 +320,15 @@ __**New Global Ban on {MUSIC_BOT_NAME}**__
     mention = message.reply_to_message.from_user.mention
     sudoers = await get_sudoers()
     if user_id == from_user_id:
-        await message.reply_text("You want to block yourself? How Fool!")
+        await message.reply_text("Bạn muốn chặn chính mình? Làm thế nào ngu ngốc!")
     elif user_id == BOT_ID:
-        await message.reply_text("Should i block myself? Lmao Ded!")
+        await message.reply_text("Tôi có nên tự chặn không? Lmao Ded!")
     elif user_id in sudoers:
-        await message.reply_text("You want to block a sudo user? KIDXZ")
+        await message.reply_text("Bạn muốn chặn một người dùng sudo? KIDXZ")
     else:
         is_gbanned = await is_gbanned_user(user_id)
         if is_gbanned:
-            await message.reply_text("Already Gbanned.")
+            await message.reply_text("❌ Đã bị cấm.")
         else:
             await add_gban_user(user_id)
             served_chats = []
@@ -343,7 +336,7 @@ __**New Global Ban on {MUSIC_BOT_NAME}**__
             for chat in chats:
                 served_chats.append(int(chat["chat_id"]))
             m = await message.reply_text(
-                f"**Initializing Gobal Ban on {mention}**\n\nExpected Time : {len(served_chats)}"
+                f"**Khởi tạo lệnh cấm đối với {mention}**\n\nThời gian mong đợi : {len(served_chats)}"
             )
             number_of_chats = 0
             for sex in served_chats:
@@ -355,14 +348,7 @@ __**New Global Ban on {MUSIC_BOT_NAME}**__
                     await asyncio.sleep(int(e.x))
                 except Exception:
                     pass
-            ban_text = f"""
-__**New Global Ban on {MUSIC_BOT_NAME}**__
-
-**Origin:** {message.chat.title} [`{message.chat.id}`]
-**Sudo User:** {from_user_mention}
-**Banned User:** {mention}
-**Banned User ID:** `{user_id}`
-**Chats:** {number_of_chats}"""
+            ban_text = f"""{from_user_mention} đã cấm {mention} [`{user_id}`] khỏi {number_of_chats} nhóm!"""
             try:
                 await m.delete()
             except Exception:
@@ -379,7 +365,7 @@ async def unban_globally(_, message):
     if not message.reply_to_message:
         if len(message.command) != 2:
             await message.reply_text(
-                "**Usage:**\n/ungban [USERNAME | USER_ID]"
+                "**Không tìm thấy người dùng. Có thể cung cấp ID người đó không?**"
             )
             return
         user = message.text.split(None, 1)[1]
@@ -389,38 +375,38 @@ async def unban_globally(_, message):
         from_user = message.from_user
         sudoers = await get_sudoers()
         if user.id == from_user.id:
-            await message.reply_text("You want to unblock yourself?")
+            await message.reply_text("Bạn muốn mở khóa cho chính mình?")
         elif user.id == BOT_ID:
-            await message.reply_text("Should i unblock myself?")
+            await message.reply_text("Tôi có nên bỏ chặn bản thân mình không?")
         elif user.id in sudoers:
-            await message.reply_text("Sudo users can't be blocked/unblocked.")
+            await message.reply_text("Người dùng Sudo không thể bị chặn / bỏ chặn.")
         else:
             is_gbanned = await is_gbanned_user(user.id)
             if not is_gbanned:
-                await message.reply_text("He's already free, why bully him?")
+                await message.reply_text("Anh ấy đã tự do rồi, tại sao lại bắt nạt anh ấy?")
             else:
                 await remove_gban_user(user.id)
-                await message.reply_text(f"Ungbanned!")
+                await message.reply_text(f"Không bị cấm!")
         return
     from_user_id = message.from_user.id
     user_id = message.reply_to_message.from_user.id
     mention = message.reply_to_message.from_user.mention
     sudoers = await get_sudoers()
     if user_id == from_user_id:
-        await message.reply_text("You want to unblock yourself?")
+        await message.reply_text("Bạn muốn mở khóa cho chính mình?")
     elif user_id == BOT_ID:
         await message.reply_text(
-            "Should i unblock myself? But i'm not blocked."
+            "Tôi có nên tự mở khóa không? Nhưng tôi không bị chặn."
         )
     elif user_id in sudoers:
-        await message.reply_text("Sudo users can't be blocked/unblocked.")
+        await message.reply_text("Người dùng Sudo không thể bị chặn / bỏ chặn.")
     else:
         is_gbanned = await is_gbanned_user(user_id)
         if not is_gbanned:
-            await message.reply_text("He's already free, why bully him?")
+            await message.reply_text("Anh ấy đã tự do rồi, tại sao lại bắt nạt anh ấy?")
         else:
             await remove_gban_user(user_id)
-            await message.reply_text(f"Ungbanned!")
+            await message.reply_text(f"Không bị cấm!")
 
 
 # Broadcast Message
