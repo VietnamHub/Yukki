@@ -9,41 +9,70 @@ from pyrogram.errors import FloodWait
 from pyrogram.types import Message
 
 from config import LOG_SESSION, OWNER_ID
-from Yukki import BOT_ID, BOT_USERNAME, MUSIC_BOT_NAME, OWNER_ID, SUDOERS, app
+from Yukki import (ASSISTANT_PREFIX, BOT_ID, BOT_USERNAME, MUSIC_BOT_NAME,
+                   OWNER_ID, SUDOERS, app)
 from Yukki.Database import (add_gban_user, add_off, add_on, add_sudo,
                             get_active_chats, get_served_chats, get_sudoers,
                             is_gbanned_user, remove_active_chat,
                             remove_gban_user, remove_served_chat, remove_sudo,
                             set_video_limit)
 
-__MODULE__ = "Nhà phát triển"
-__HELP__ = """
+__MODULE__ = "SudoUsers"
+__HELP__ = f"""
 
-
-/sudolist 
-    Kiểm tra danh sách người dùng sudo của Bot.
-
-
-**Note:**
-Chỉ dành cho người dùng Sudo.
-
+**<u>ADD & REMOVE SUDO USERS :</u>**
 /addsudo [Username or Reply to a user]
-- Để thêm người dùng trong số người dùng Sudo của Bot.
-
 /delsudo [Username or Reply to a user]
-- Để xóa một người dùng khỏi người dùng Sudo của Bot.
 
-/restart 
-- Khởi động lại Bot [Tất cả tải xuống, bộ nhớ cache, tệp thô cũng sẽ bị xóa].
+**<u>HEROKU:</u>**
+/get_log - Log of last 100 lines from Heroku.
+/usage - Dyno Usage.
 
-/maintenance [enable / disable]
-- Khi được kích hoạt, Bot sẽ ở chế độ bảo trì. Không ai có thể chơi Nhạc bây giờ!
+**<u>CONFIG VARS:</u>**
+/get_var - Get a config var from Heroku or .env.
+/del_var - Delete any var on Heroku or .env.
+/set_var [Var Name] [Value] - Set a Var or Update a Var on heroku or .env. Seperate Var and its Value with a space.
 
-/logger [enable / disable]
-- Khi được bật Bot sẽ ghi lại các truy vấn được tìm kiếm trong nhóm trình ghi nhật ký.
+**<u>BOT COMMANDS:</u>**
+/restart - Restart Bot. 
+/update - Update Bot.
+/clean - Clean Temp Files .
+/maintenance [enable / disable] 
+/logger [enable / disable] - Bot logs the searched queries in logger group.
 
-/clean
-- Làm sạch các tệp và nhật ký Temp.
+**<u>STATS COMMANDS:</u>**
+/activevc - Check active voice chats on bot.
+/activevideo - Check active video calls on bot.
+/stats - Check Bots Stats
+
+**<u>BLACKLIST CHAT FUNCTION:</u>**
+/blacklistchat [CHAT_ID] - Blacklist any chat from using Music Bot
+/whitelistchat [CHAT_ID] - Whitelist any blacklisted chat from using Music Bot
+
+**<u>BROADCAST FUNCTION:</u>**
+/broadcast [Message or Reply to a Message] - Broadcast any message to Bot's Served Chats.
+/broadcast_pin [Message or Reply to a Message] - Broadcast any message to Bot's Served Chats with message getting Pinned in chat [Disabled Notifications].
+/broadcast_pin_loud [Message or Reply to a Message] - Broadcast any message to Bot's Served Chats with message getting Pinned in chat [Enabled Notifications].
+
+**<u>GBAN FUNCTION:</u>**
+/gban [Username or Reply to a user] - Ban a user globally in Bot's Served Chats and prevents user from using bot commands.
+/ungban [Username or Reply to a user] - Remove a user from Bot's GBan List.
+
+**<u>JOIN/LEAVE FUNCTION:</u>**
+/joinassistant [Chat Username or Chat ID] - Join assistant to a group.
+/leaveassistant [Chat Username or Chat ID] - Assistant will leave the particular group.
+/leavebot [Chat Username or Chat ID] - Bot will leave the particular chat.
+
+**<u>VIDEOCALLS FUNCTION:</u>**
+/set_video_limit [Number of Chats] - Set a maximum Number of Chats allowed for Video Calls at a time.
+
+**<u>ASSISTAN FUNCTION:</u>**
+{ASSISTANT_PREFIX[0]}block [ Reply to a User Message] - Blocks the User from Assistant Account.
+{ASSISTANT_PREFIX[0]}unblock [ Reply to a User Message] - Unblocks the User from Assistant Account.
+{ASSISTANT_PREFIX[0]}approve [ Reply to a User Message] - Approves the User for DM.
+{ASSISTANT_PREFIX[0]}disapprove [ Reply to a User Message] - Disapproves the User for DM.
+{ASSISTANT_PREFIX[0]}pfp [ Reply to a Photo] - Changes Assistant account PFP.
+{ASSISTANT_PREFIX[0]}bio [Bio text] - Changes Bio of Assistant Account.
 """
 # Add Sudo Users!
 
@@ -53,7 +82,7 @@ async def useradd(_, message: Message):
     if not message.reply_to_message:
         if len(message.command) != 2:
             await message.reply_text(
-                "Trả lời tin nhắn của người dùng hoặc cung cấp tên người dùng / user_id."
+                "Reply to a user's message or give username/user_id."
             )
             return
         user = message.text.split(None, 1)[1]
@@ -62,29 +91,29 @@ async def useradd(_, message: Message):
         user = await app.get_users(user)
         if user.id in SUDOERS:
             return await message.reply_text(
-                f"{user.mention} đã là một người dùng sudo."
+                f"{user.mention} is already a sudo user."
             )
         added = await add_sudo(user.id)
         if added:
             await message.reply_text(
-                f"Thêm **{user.mention}** cho Người dùng Sudo."
+                f"Added **{user.mention}** to Sudo Users."
             )
             os.system(f"kill -9 {os.getpid()} && python3 -m Yukki")
         else:
-            await message.reply_text("Thất bại")
+            await message.reply_text("Failed")
         return
     if message.reply_to_message.from_user.id in SUDOERS:
         return await message.reply_text(
-            f"{message.reply_to_message.from_user.mention} đã là một người dùng sudo."
+            f"{message.reply_to_message.from_user.mention} is already a sudo user."
         )
     added = await add_sudo(message.reply_to_message.from_user.id)
     if added:
         await message.reply_text(
-            f"Thêm **{message.reply_to_message.from_user.mention}** cho Người dùng Sudo"
+            f"Added **{message.reply_to_message.from_user.mention}** to Sudo Users"
         )
         os.system(f"kill -9 {os.getpid()} && python3 -m Yukki")
     else:
-        await message.reply_text("Thất bại")
+        await message.reply_text("Failed")
     return
 
 
@@ -93,7 +122,7 @@ async def userdel(_, message: Message):
     if not message.reply_to_message:
         if len(message.command) != 2:
             await message.reply_text(
-                "Trả lời tin nhắn của người dùng hoặc cung cấp tên người dùng/user_id."
+                "Reply to a user's message or give username/user_id."
             )
             return
         user = message.text.split(None, 1)[1]
@@ -102,21 +131,21 @@ async def userdel(_, message: Message):
         user = await app.get_users(user)
         from_user = message.from_user
         if user.id not in SUDOERS:
-            return await message.reply_text(f"Không phải là một phần của Bot's Sudo.")
+            return await message.reply_text(f"Not a part of Bot's Sudo.")
         removed = await remove_sudo(user.id)
         if removed:
             await message.reply_text(
-                f"Xoá **{user.mention}** khỏi {MUSIC_BOT_NAME}."
+                f"Removed **{user.mention}** from {MUSIC_BOT_NAME}'s Sudo."
             )
             return os.system(f"kill -9 {os.getpid()} && python3 -m Yukki")
-        await message.reply_text(f"Có gì đó không ổn đã xảy ra.")
+        await message.reply_text(f"Something wrong happened.")
         return
     from_user_id = message.from_user.id
     user_id = message.reply_to_message.from_user.id
     mention = message.reply_to_message.from_user.mention
     if user_id not in SUDOERS:
         return await message.reply_text(
-            f"Không phải là một phần của {MUSIC_BOT_NAME}'s Sudo."
+            f"Not a part of {MUSIC_BOT_NAME}'s Sudo."
         )
     removed = await remove_sudo(user_id)
     if removed:
@@ -130,7 +159,7 @@ async def userdel(_, message: Message):
 @app.on_message(filters.command("sudolist"))
 async def sudoers_list(_, message: Message):
     sudoers = await get_sudoers()
-    text = "⭐️<u> **Tác giả:**</u>\n"
+    text = "⭐️<u> **Owners:**</u>\n"
     sex = 0
     for x in OWNER_ID:
         try:
@@ -148,13 +177,13 @@ async def sudoers_list(_, message: Message):
                 user = user.first_name if not user.mention else user.mention
                 if smex == 0:
                     smex += 1
-                    text += "\n⭐️<u> **Người dùng Sudo:**</u>\n"
+                    text += "\n⭐️<u> **Sudo Users:**</u>\n"
                 sex += 1
                 text += f"{sex}➤ {user}\n"
             except Exception:
                 continue
     if not text:
-        await message.reply_text("Không có người dùng Sudo")
+        await message.reply_text("No Sudo Users")
     else:
         await message.reply_text(text)
 
@@ -176,33 +205,33 @@ async def set_video_limit_kid(_, message: Message):
         limit = int(state)
     except:
         return await message.reply_text(
-            "Vui lòng sử dụng số để thiết lập giới hạn."
+            "Please Use Numeric Numbers for Setting Limit."
         )
     await set_video_limit(141414, limit)
     await message.reply_text(
-        f"Giới hạn tối đa cuộc gọi điện video được xác định thành {limit} nhóm."
+        f"Video Calls Maximum Limit Defined to {limit} Chats."
     )
 
 
 ## Maintenance Yukki
 
 
-@app.on_message(filters.command("baotri") & filters.user(SUDOERS))
+@app.on_message(filters.command("maintenance") & filters.user(SUDOERS))
 async def maintenance(_, message):
-    usage = "**Sử dụng:**\n/baotri [on|off]"
+    usage = "**Usage:**\n/maintenance [enable|disable]"
     if len(message.command) != 2:
         return await message.reply_text(usage)
     chat_id = message.chat.id
     state = message.text.split(None, 1)[1].strip()
     state = state.lower()
-    if state == "on":
+    if state == "enable":
         user_id = 1
         await add_on(user_id)
-        await message.reply_text("Được kích hoạt để bảo trì")
-    elif state == "off":
+        await message.reply_text("Enabled for Maintenance")
+    elif state == "disable":
         user_id = 1
         await add_off(user_id)
-        await message.reply_text("Chế độ bảo trì bị tắt")
+        await message.reply_text("Maintenance Mode Disabled")
     else:
         await message.reply_text(usage)
 
@@ -214,22 +243,22 @@ async def maintenance(_, message):
 async def logger(_, message):
     if LOG_SESSION == "None":
         return await message.reply_text(
-            "Không có tài khoản người ghi nhật ký được xác định.\n\nVui lòng đặt <code>LOG_SESSION</code> var và sau đó thử ghi nhật ký."
+            "No Logger Account Defined.\n\nPlease Set <code>LOG_SESSION</code> var and then try loggging."
         )
-    usage = "**Sử dụng:**\n/logger [on|off]"
+    usage = "**Usage:**\n/logger [enable|disable]"
     if len(message.command) != 2:
         return await message.reply_text(usage)
     chat_id = message.chat.id
     state = message.text.split(None, 1)[1].strip()
     state = state.lower()
-    if state == "on":
+    if state == "enable":
         user_id = 5
         await add_on(user_id)
-        await message.reply_text("Đã bật ghi nhật ký")
-    elif state == "off":
+        await message.reply_text("Enabled Logging")
+    elif state == "disable":
         user_id = 5
         await add_off(user_id)
-        await message.reply_text("Ghi nhật ký bị vô hiệu hóa")
+        await message.reply_text("Logging Disabled")
     else:
         await message.reply_text(usage)
 
@@ -241,7 +270,7 @@ async def logger(_, message):
 async def ban_globally(_, message):
     if not message.reply_to_message:
         if len(message.command) < 2:
-            await message.reply_text("**Sử dụng:**\n/gban [USERNAME | USER_ID]")
+            await message.reply_text("**Usage:**\n/gban [USERNAME | USER_ID]")
             return
         user = message.text.split(None, 2)[1]
         if "@" in user:
@@ -250,12 +279,12 @@ async def ban_globally(_, message):
         from_user = message.from_user
         if user.id == from_user.id:
             return await message.reply_text(
-                "**Bạn muốn gban cho mình? Thật ngu ngốc!**"
+                "You want to gban yourself? How Fool!"
             )
         elif user.id == BOT_ID:
-            await message.reply_text("**Tôi có nên tự chặn không? Lmao Ded!**")
+            await message.reply_text("Should i block myself? Lmao Ded!")
         elif user.id in SUDOERS:
-            await message.reply_text("**Bạn muốn chặn một người dùng sudo? KIDXZ**")
+            await message.reply_text("You want to block a sudo user? KIDXZ")
         else:
             await add_gban_user(user.id)
             served_chats = []
@@ -263,7 +292,7 @@ async def ban_globally(_, message):
             for chat in chats:
                 served_chats.append(int(chat["chat_id"]))
             m = await message.reply_text(
-                f"**⏳ Đang tiến hành cấm {user.mention}!**"
+                f"**Initializing Global Ban on {user.mention}**\n\nExpected Time : {len(served_chats)}"
             )
             number_of_chats = 0
             for sex in served_chats:
@@ -275,7 +304,14 @@ async def ban_globally(_, message):
                     await asyncio.sleep(int(e.x))
                 except Exception:
                     pass
-            ban_text = f"""**⛔ {user.mention} đã bị cấm khỏi {number_of_chats} nhóm.**"""
+            ban_text = f"""
+__**New Global Ban on {MUSIC_BOT_NAME}**__
+
+**Origin:** {message.chat.title} [`{message.chat.id}`]
+**Sudo User:** {from_user.mention}
+**Banned User:** {user.mention}
+**Banned User ID:** `{user.id}`
+**Chats:** {number_of_chats}"""
             try:
                 await m.delete()
             except Exception:
@@ -291,15 +327,15 @@ async def ban_globally(_, message):
     mention = message.reply_to_message.from_user.mention
     sudoers = await get_sudoers()
     if user_id == from_user_id:
-        await message.reply_text("Bạn muốn chặn chính mình? Làm thế nào ngu ngốc!")
+        await message.reply_text("You want to block yourself? How Fool!")
     elif user_id == BOT_ID:
-        await message.reply_text("Tôi có nên tự chặn không? Lmao Ded!")
+        await message.reply_text("Should i block myself? Lmao Ded!")
     elif user_id in sudoers:
-        await message.reply_text("Bạn muốn chặn một người dùng sudo? KIDXZ")
+        await message.reply_text("You want to block a sudo user? KIDXZ")
     else:
         is_gbanned = await is_gbanned_user(user_id)
         if is_gbanned:
-            await message.reply_text("⛔ Đã bị cấm.")
+            await message.reply_text("Already Gbanned.")
         else:
             await add_gban_user(user_id)
             served_chats = []
@@ -307,7 +343,7 @@ async def ban_globally(_, message):
             for chat in chats:
                 served_chats.append(int(chat["chat_id"]))
             m = await message.reply_text(
-                f"**⏳ Đang tiến hành cấm {mention}!**"
+                f"**Initializing Gobal Ban on {mention}**\n\nExpected Time : {len(served_chats)}"
             )
             number_of_chats = 0
             for sex in served_chats:
@@ -319,7 +355,14 @@ async def ban_globally(_, message):
                     await asyncio.sleep(int(e.x))
                 except Exception:
                     pass
-            ban_text = f"""**⛔ Đã cấm {mention} khỏi {number_of_chats} nhóm!**"""
+            ban_text = f"""
+__**New Global Ban on {MUSIC_BOT_NAME}**__
+
+**Origin:** {message.chat.title} [`{message.chat.id}`]
+**Sudo User:** {from_user_mention}
+**Banned User:** {mention}
+**Banned User ID:** `{user_id}`
+**Chats:** {number_of_chats}"""
             try:
                 await m.delete()
             except Exception:
@@ -336,7 +379,7 @@ async def unban_globally(_, message):
     if not message.reply_to_message:
         if len(message.command) != 2:
             await message.reply_text(
-                "**Sử dụng:**\n/ungban [USERNAME | USER_ID]"
+                "**Usage:**\n/ungban [USERNAME | USER_ID]"
             )
             return
         user = message.text.split(None, 1)[1]
@@ -346,38 +389,38 @@ async def unban_globally(_, message):
         from_user = message.from_user
         sudoers = await get_sudoers()
         if user.id == from_user.id:
-            await message.reply_text("Bạn muốn bỏ chặn chính mình?")
+            await message.reply_text("You want to unblock yourself?")
         elif user.id == BOT_ID:
-            await message.reply_text("Tôi có nên tự mở khóa không?")
+            await message.reply_text("Should i unblock myself?")
         elif user.id in sudoers:
-            await message.reply_text("Người dùng Sudo không thể bị chặn / bỏ chặn.")
+            await message.reply_text("Sudo users can't be blocked/unblocked.")
         else:
             is_gbanned = await is_gbanned_user(user.id)
             if not is_gbanned:
-                await message.reply_text("Anh ấy đã tự do rồi, tại sao lại bắt nạt anh ấy?")
+                await message.reply_text("He's already free, why bully him?")
             else:
                 await remove_gban_user(user.id)
-                await message.reply_text(f"Đã xoá khỏi blacklist!")
+                await message.reply_text(f"Ungbanned!")
         return
     from_user_id = message.from_user.id
     user_id = message.reply_to_message.from_user.id
     mention = message.reply_to_message.from_user.mention
     sudoers = await get_sudoers()
     if user_id == from_user_id:
-        await message.reply_text("Bạn muốn bỏ chặn chính mình?")
+        await message.reply_text("You want to unblock yourself?")
     elif user_id == BOT_ID:
         await message.reply_text(
-            "Tôi có nên tự mở khóa không? Nhưng tôi không bị chặn."
+            "Should i unblock myself? But i'm not blocked."
         )
     elif user_id in sudoers:
-        await message.reply_text("Người dùng Sudo không thể bị chặn / bỏ chặn.")
+        await message.reply_text("Sudo users can't be blocked/unblocked.")
     else:
         is_gbanned = await is_gbanned_user(user_id)
         if not is_gbanned:
-            await message.reply_text("Anh ấy đã tự do rồi, tại sao lại bắt nạt anh ấy?")
+            await message.reply_text("He's already free, why bully him?")
         else:
             await remove_gban_user(user_id)
-            await message.reply_text(f"Đã xoá khỏi blacklist!!")
+            await message.reply_text(f"Ungbanned!")
 
 
 # Broadcast Message
@@ -409,12 +452,12 @@ async def broadcast_message_pin_silent(_, message):
             except Exception:
                 pass
         await message.reply_text(
-            f"**Truyền tin nhắn trong {sent} nhóm với {pin} bài đã ghim.**"
+            f"**Broadcasted Message In {sent}  Chats with {pin} Pins.**"
         )
         return
     if len(message.command) < 2:
         await message.reply_text(
-            "**Sử dụng**:\n/broadcast [MESSAGE] or [Reply to a Message]"
+            "**Usage**:\n/broadcast [MESSAGE] or [Reply to a Message]"
         )
         return
     text = message.text.split(None, 1)[1]
@@ -437,7 +480,7 @@ async def broadcast_message_pin_silent(_, message):
         except Exception:
             pass
     await message.reply_text(
-        f"**Truyền tin nhắn trong {sent}nhóm và {pin} bài đã ghim.**"
+        f"**Broadcasted Message In {sent} Chats and {pin} Pins.**"
     )
 
 
@@ -467,12 +510,12 @@ async def broadcast_message_pin_loud(_, message):
             except Exception:
                 pass
         await message.reply_text(
-            f"**Truyền tin nhắn trong {sent}  nhóm và {pin} bài đã ghim.**"
+            f"**Broadcasted Message In {sent}  Chats with {pin} Pins.**"
         )
         return
     if len(message.command) < 2:
         await message.reply_text(
-            "**Sử dụng**:\n/broadcast [MESSAGE] or [Reply to a Message]"
+            "**Usage**:\n/broadcast [MESSAGE] or [Reply to a Message]"
         )
         return
     text = message.text.split(None, 1)[1]
@@ -518,11 +561,11 @@ async def broadcast(_, message):
                 sent += 1
             except Exception:
                 pass
-        await message.reply_text(f"**Truyền tin nhắn trong {sent} nhóm.**")
+        await message.reply_text(f"**Broadcasted Message In {sent} Chats.**")
         return
     if len(message.command) < 2:
         await message.reply_text(
-            "**Sử dụng**:\n/broadcast [MESSAGE] or [Reply to a Message]"
+            "**Usage**:\n/broadcast [MESSAGE] or [Reply to a Message]"
         )
         return
     text = message.text.split(None, 1)[1]
@@ -538,7 +581,7 @@ async def broadcast(_, message):
             sent += 1
         except Exception:
             pass
-    await message.reply_text(f"**Truyền tin nhắn trong {sent} nhóm.**")
+    await message.reply_text(f"**Broadcasted Message In {sent} Chats.**")
 
 
 # Clean
@@ -552,4 +595,4 @@ async def clean(_, message):
     shutil.rmtree(dir1)
     os.mkdir(dir)
     os.mkdir(dir1)
-    await message.reply_text("Đã làm sạch thành công tất cả **temp** dir(s)!")
+    await message.reply_text("Successfully cleaned all **temp** dir(s)!")
