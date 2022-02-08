@@ -9,10 +9,16 @@ from pyrogram.types import Message
 from Yukki import BOT_USERNAME, MUSIC_BOT_NAME, app, boottime
 from Yukki.Utilities.ping import get_readable_time
 
-__MODULE__ = "Ping"
+__MODULE__ = "Essentials"
 __HELP__ = """
 
-/ping - Kiểm tra xem Bot còn sống hay không.
+/ping - Check if Bot is alive or not.
+
+/start - Start the Bot.
+
+/help - Get Commands Helper Menu.
+
+/settings - Get Settings button.
 """
 
 
@@ -38,7 +44,7 @@ async def ping(_, message):
     )
     uptime = await bot_sys_stats()
     end = datetime.now()
-    resp = (end - start).microseconds / 10
+    resp = (end - start).microseconds / 1000
     await response.edit_text(
         f"**Pong!**\n`⚡{resp} ms`\n\n<b><u>{MUSIC_BOT_NAME} System Stats:</u></b>{uptime}"
     )
