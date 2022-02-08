@@ -15,28 +15,21 @@ from Yukki.Utilities.youtube import get_yt_info_query, get_yt_info_query_slider
 
 loop = asyncio.get_event_loop()
 
-__MODULE__ = "Song"
-__HELP__ = """
 
-
-/song [Youtube URL or Search Query] 
-- Download the particular query in audio or video format.
-
-
-
-"""
-
-
-@app.on_message(
-    filters.command(["song", f"song@{BOT_USERNAME}"]) & filters.group
-)
+@app.on_message(filters.command(["song", f"song@{BOT_USERNAME}"]))
 @PermissionCheck
 async def play(_, message: Message):
-    if message.sender_chat:
-        return await message.reply_text(
-            "You're an __Anonymous Admin__ in this Chat Group!\nRevert back to User Account From Admin Rights."
-        )
-    await message.delete()
+    if message.chat.type == "private":
+        pass
+    else:
+        if message.sender_chat:
+            return await message.reply_text(
+                "You're an __Anonymous Admin__ in this Chat Group!\nRevert back to User Account From Admin Rights."
+            )
+    try:
+        await message.delete()
+    except:
+        pass
     url = get_url(message)
     if url:
         mystic = await message.reply_text("🔄 Processing URL... Please Wait!")
